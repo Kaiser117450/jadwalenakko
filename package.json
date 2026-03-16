@@ -1,0 +1,17 @@
+{
+  "name": "jadwal-operasional-enakko",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "astro": "^5.6.0",
+    "tailwindcss": "^4.1.0"
+  }
+}
