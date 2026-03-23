@@ -15,6 +15,7 @@ import {
   updateBranch,
   upsertAnnouncement,
 } from "./reducers";
+import { publicCurrentStatus, publicReadModels } from "./publicReadModel";
 
 export {
   announcementBranchTargets,
@@ -24,6 +25,8 @@ export {
   deactivateBranch,
   operationalSchema,
   phaseOneSeedState,
+  publicCurrentStatus,
+  publicReadModels,
   reducers,
   seedNormalOperation,
   setAnnouncementBranchTargets,
@@ -49,11 +52,17 @@ export type {
   UpdateBranchInput,
   UpsertAnnouncementInput,
 } from "./reducers";
+export type {
+  PublicBranchVisibility,
+  PublicCurrentStatusPayload,
+  PublicReadModelContract,
+} from "./publicReadModel";
 
 export const moduleContract = {
   moduleRoot: "spacetimedb",
   entrypoint: "spacetimedb/src/module.ts",
   schema: operationalSchema,
+  readModels: publicReadModels,
   reducers,
   seedData: phaseOneSeedState,
 };
