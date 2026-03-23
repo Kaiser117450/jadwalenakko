@@ -12,7 +12,7 @@ Roadmap ini mengubah microsite Astro yang masih hard-coded menjadi website pembe
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: SpacetimeDB Foundation And Access Control** - Validate module path, model core tables, and lock down write access
+- [x] **Phase 1: SpacetimeDB Foundation And Access Control** - Validate module path, model core tables, and lock down write access
 - [ ] **Phase 2: Public Realtime Status Board** - Replace hard-coded public state with a live public read model
 - [ ] **Phase 3: Branch Operations Management** - Manage branch data and branch-targeted status changes from admin flows
 - [ ] **Phase 4: Announcement Scheduling And Status Rules** - Publish scheduled operational announcements with explicit status types and time rules
@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01: Validate the local SpacetimeDB module path, auth approach, and generated binding workflow
 - [x] 01-02: Design and implement normalized branch, status, and announcement schema plus reducers
-- [ ] 01-03: Establish admin authorization checks and seed/dev data needed for downstream UI work
+- [x] 01-03: Establish admin authorization checks and seed/dev data needed for downstream UI work
 
 ### Phase 2: Public Realtime Status Board
 **Goal**: Migrate the public website from hard-coded schedule arrays to a realtime public read model without losing clarity on normal days.
@@ -106,7 +106,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. SpacetimeDB Foundation And Access Control | 2/3 | In Progress | 01-01, 01-02 |
+| 1. SpacetimeDB Foundation And Access Control | 3/3 | Complete | 01-01, 01-02, 01-03 |
 | 2. Public Realtime Status Board | 0/3 | Not started | - |
 | 3. Branch Operations Management | 0/2 | Not started | - |
 | 4. Announcement Scheduling And Status Rules | 0/3 | Not started | - |
