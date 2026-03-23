@@ -1,177 +1,17 @@
 ---
-const allBranches = [
-  "Panjer",
-  "Ahmad Yani",
-  "Monang Maning",
-  "Tukad Pakerisan",
-  "Dalung 1",
-  "Pulau Kawe",
-  "Kuta",
-  "Tangkuban Perahu",
-  "Pemogan",
-  "Mengwi",
-  "Dalung 2",
-  "Kreneng",
-];
+import { buildPublicStatusViewModel } from "../lib/public-status/view-model";
 
-const limitedOpenBranches = [
-  "Panjer",
-  "Ahmad Yani",
-  "Monang Maning",
-  "Tukad Pakerisan",
-  "Dalung 1",
-  "Pulau Kawe",
-  "Kuta",
-];
-
-const limitedClosedBranches = [
-  "Tangkuban Perahu",
-  "Pemogan",
-  "Mengwi",
-  "Dalung 2",
-  "Kreneng",
-];
-
-const schedule = [
-  {
-    date: "2026-03-16",
-    displayDate: "16 Maret 2026",
-    label: "Operasional Normal",
-    type: "normal",
-    hours: "Jam reguler",
-    title: "Semua Gerai Buka Normal",
-    bannerMessage: "Semua gerai buka normal sesuai jam operasional reguler.",
-    note: "Layanan makan di tempat, take away, dan delivery berjalan seperti biasa.",
-    openBranches: allBranches,
-    closedBranches: [],
-  },
-  {
-    date: "2026-03-17",
-    displayDate: "17 Maret 2026",
-    label: "Crew Mudik",
-    type: "limited",
-    hours: "Jam reguler gerai aktif",
-    title: "Sebagian Gerai Tetap Buka",
-    bannerMessage:
-      "Crew Mudik. Gerai Panjer, Ahmad Yani, Monang Maning, Tukad Pakerisan, Dalung 1, Pulau Kawe, dan Kuta tetap buka.",
-    note: "Operasional difokuskan pada gerai utama yang tetap melayani selama masa mudik.",
-    openBranches: limitedOpenBranches,
-    closedBranches: limitedClosedBranches,
-  },
-  {
-    date: "2026-03-18",
-    displayDate: "18 Maret 2026",
-    label: "Pengerupukan",
-    type: "halfday",
-    hours: "09.00 - 16.00",
-    title: "Buka 1/2 Hari",
-    bannerMessage:
-      "Buka setengah hari pukul 09.00 - 16.00. Gerai tertentu tutup selama Pengerupukan.",
-    note: "Jam layanan dipercepat untuk persiapan menjelang Hari Raya Nyepi.",
-    openBranches: limitedOpenBranches,
-    closedBranches: limitedClosedBranches,
-  },
-  {
-    date: "2026-03-19",
-    displayDate: "19 Maret 2026",
-    label: "Nyepi",
-    type: "closed",
-    hours: "Tutup total",
-    title: "SEMUA GERAI AGE BALI TUTUP TOTAL",
-    bannerMessage: "NYEPI. Seluruh gerai tutup total.",
-    note: "Tidak ada operasional di seluruh gerai Ayam Guling Enakko area Bali.",
-    openBranches: [],
-    closedBranches: allBranches,
-  },
-  {
-    date: "2026-03-20",
-    displayDate: "20 Maret 2026",
-    label: "Cuti / Lebaran",
-    type: "limited",
-    hours: "Jam reguler gerai aktif",
-    title: "Gerai Terpilih Tetap Buka",
-    bannerMessage: "Cuti Lebaran. Gerai terpilih tetap buka, sebagian gerai lainnya tutup.",
-    note: "Operasional terbatas masih mengikuti pola gerai aktif selama cuti bersama.",
-    openBranches: limitedOpenBranches,
-    closedBranches: limitedClosedBranches,
-  },
-  {
-    date: "2026-03-21",
-    displayDate: "21 Maret 2026",
-    label: "Idul Fitri",
-    type: "lebaran",
-    hours: "13.00 - 22.00",
-    title: "Buka 1/2 Hari",
-    bannerMessage:
-      "LEBARAN. Buka setengah hari pukul 13.00 - 22.00. Gerai tertentu tutup.",
-    note: "Jam operasional khusus Idul Fitri berlaku untuk gerai yang tetap melayani.",
-    openBranches: limitedOpenBranches,
-    closedBranches: limitedClosedBranches,
-  },
-  {
-    date: "2026-03-22",
-    displayDate: "22 Maret 2026",
-    label: "Cuti / Lebaran",
-    type: "limited",
-    hours: "Jam reguler gerai aktif",
-    title: "Gerai Terpilih Tetap Buka",
-    bannerMessage: "Cuti Lebaran. Gerai terpilih tetap buka, sebagian gerai lainnya tutup.",
-    note: "Operasional terbatas masih mengikuti pola gerai aktif selama cuti bersama.",
-    openBranches: limitedOpenBranches,
-    closedBranches: limitedClosedBranches,
-  },
-  {
-    date: "2026-03-23",
-    displayDate: "23 Maret 2026",
-    label: "Cuti / Lebaran",
-    type: "limited",
-    hours: "Jam reguler gerai aktif",
-    title: "Gerai Terpilih Tetap Buka",
-    bannerMessage: "Cuti Lebaran. Gerai terpilih tetap buka, sebagian gerai lainnya tutup.",
-    note: "Operasional terbatas masih mengikuti pola gerai aktif selama cuti bersama.",
-    openBranches: limitedOpenBranches,
-    closedBranches: limitedClosedBranches,
-  },
-  {
-    date: "2026-03-24",
-    displayDate: "24 Maret 2026",
-    label: "Cuti / Lebaran",
-    type: "limited",
-    hours: "Jam reguler gerai aktif",
-    title: "Gerai Terpilih Tetap Buka",
-    bannerMessage: "Cuti Lebaran. Gerai terpilih tetap buka, sebagian gerai lainnya tutup.",
-    note: "Operasional terbatas masih mengikuti pola gerai aktif selama cuti bersama.",
-    openBranches: limitedOpenBranches,
-    closedBranches: limitedClosedBranches,
-  },
-  {
-    date: "2026-03-25",
-    displayDate: "25 Maret 2026",
-    label: "Operasional Normal",
-    type: "normal",
-    hours: "Jam reguler",
-    title: "Semua Gerai Buka Normal",
-    bannerMessage: "Semua gerai buka normal kembali sesuai jam operasional reguler.",
-    note: "Operasional Ayam Guling Enakko kembali berjalan penuh di semua gerai.",
-    openBranches: allBranches,
-    closedBranches: [],
-  },
-].map((item) => ({
-  ...item,
-  dayNumber: item.date.slice(-2),
-  openCount: item.openBranches.length,
-  closedCount: item.closedBranches.length,
-}));
+const initialViewModel = buildPublicStatusViewModel(null, "loading");
 ---
 
 <html lang="id">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jadwal Operasional Nyepi & Lebaran 2026 | Ayam Guling Enakko</title>
+    <title>Status Operasional Realtime | Ayam Guling Enakko</title>
     <meta
       name="description"
-      content="Papan pengumuman operasional Ayam Guling Enakko untuk periode Nyepi dan Lebaran 2026."
+      content="Papan status operasional realtime Ayam Guling Enakko dengan pembaruan live dari database."
     />
     <style is:global>
       @import "tailwindcss";
@@ -213,21 +53,29 @@ const schedule = [
         letter-spacing: 0.04em;
       }
 
-      @keyframes rise-in {
-        from {
-          opacity: 0;
-          transform: translateY(20px) scale(0.985);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
+      [data-status-tone="normal"] {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.1);
       }
 
-      .rise-card {
-        opacity: 0;
-        animation: rise-in 0.65s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+      [data-status-tone="limited"] {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      [data-status-tone="halfday"] {
+        border-color: rgba(255, 195, 0, 0.45);
+        background: rgba(255, 195, 0, 0.16);
+      }
+
+      [data-status-tone="closed"] {
+        border-color: rgba(255, 255, 255, 0.05);
+        background: #ff0000;
+      }
+
+      [data-status-tone="unavailable"] {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
       }
     </style>
   </head>
@@ -239,31 +87,34 @@ const schedule = [
     </div>
 
     <main class="relative mx-auto min-h-screen max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <section id="schedule-content" class="space-y-8 pb-10 sm:space-y-10">
+      <section class="space-y-8 pb-10 sm:space-y-10">
         <section class="rounded-[2.6rem] border border-white/70 bg-white/45 p-5 shadow-[0_28px_90px_rgba(168,62,0,0.12)] backdrop-blur-md sm:p-7 lg:p-10">
           <div class="mx-auto max-w-4xl text-center">
-            <img src="/logo.png" alt="Ayam Guling Enakko Logo" class="mx-auto h-20 mb-4" />
+            <img src="/logo.png" alt="Ayam Guling Enakko Logo" class="mx-auto mb-4 h-20" />
             <span class="inline-flex rounded-full border border-[#ff0000]/10 bg-white/85 px-4 py-1 text-[11px] font-black uppercase tracking-[0.32em] text-[#a12e00]">
-              Official Schedule
+              Live Status Board
             </span>
             <h1 class="display-font mt-5 text-[2.7rem] font-black leading-[0.95] text-[#ff0000] sm:text-[4.4rem]">
-              Jadwal Operasional Nyepi & Lebaran 2026
+              Status Operasional Ayam Guling Enakko
             </h1>
             <p class="mx-auto mt-5 max-w-3xl text-sm leading-7 text-[#8a2a08] sm:text-base sm:leading-8">
-              Informasi ini mengikuti tanggal browser pengunjung. Banner hari ini dan kartu jadwal yang relevan
-              akan berubah otomatis sesuai periode operasional Ayam Guling Enakko area Bali.
+              Halaman ini membaca status operasional realtime dari SpacetimeDB. Banner utama dan daftar gerai
+              selalu mengikuti status live yang sedang aktif tanpa perlu edit source atau rebuild manual.
             </p>
           </div>
 
           <div class="mt-8 grid gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-6">
-            <div class="rounded-[2.2rem] bg-[linear-gradient(135deg,#7a1200_0%,#551000_100%)] p-6 text-white shadow-[0_24px_80px_rgba(122,18,0,0.28)] sm:p-7">
+            <section class="rounded-[2.2rem] bg-[linear-gradient(135deg,#7a1200_0%,#551000_100%)] p-6 text-white shadow-[0_24px_80px_rgba(122,18,0,0.28)] sm:p-7">
               <p class="text-xs font-black uppercase tracking-[0.3em] text-white/70">Status Real-Time</p>
               <p id="current-date-label" class="mt-2 text-sm font-semibold text-white/90">
                 Memuat tanggal perangkat...
               </p>
               <div
                 id="status-shell"
-                class="mt-6 rounded-[1.9rem] border border-white/12 bg-white/10 p-5 backdrop-blur-sm sm:p-6"
+                data-public-state={initialViewModel.presentationState}
+                data-status-tone={initialViewModel.statusTone}
+                aria-live="polite"
+                class="mt-6 rounded-[1.9rem] border p-5 backdrop-blur-sm sm:p-6"
               >
                 <div class="flex items-start gap-4">
                   <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#ffc300] text-[#7a1200] shadow-[0_12px_28px_rgba(255,195,0,0.28)]">
@@ -272,27 +123,56 @@ const schedule = [
                     </svg>
                   </div>
                   <div class="min-w-0">
-                    <p class="text-xs font-black uppercase tracking-[0.28em] text-white/65">Hari Ini</p>
-                    <p id="status-banner" class="mt-3 text-lg font-black leading-8 text-white sm:text-xl">
-                      Menyiapkan status operasional hari ini...
+                    <p
+                      data-public-status-label
+                      class="text-xs font-black uppercase tracking-[0.28em] text-white/65"
+                    >
+                      {initialViewModel.statusLabel}
+                    </p>
+                    <h2
+                      data-public-headline
+                      class="display-font mt-3 text-[2rem] font-black leading-tight text-white sm:text-[2.4rem]"
+                    >
+                      {initialViewModel.headline}
+                    </h2>
+                    <p data-public-status-banner class="mt-3 text-sm leading-7 text-white/88 sm:text-base">
+                      {initialViewModel.banner}
                     </p>
                   </div>
                 </div>
+
+                <div class="mt-5 flex flex-wrap items-center gap-3">
+                  <span
+                    data-public-fallback-chip
+                    class="hidden rounded-full border border-white/12 bg-white/12 px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-white"
+                  >
+                    Operasional Normal
+                  </span>
+                  <span data-public-connection-note class="text-xs font-semibold tracking-[0.08em] text-white/72">
+                    Menunggu status dari database realtime.
+                  </span>
+                </div>
               </div>
-            </div>
+            </section>
 
             <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
               <div class="rounded-[1.8rem] border border-white/70 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
-                <p class="text-3xl font-black text-[#ff0000]">12</p>
+                <p data-public-total-count class="text-3xl font-black text-[#ff0000]">
+                  {initialViewModel.openBranchCount + initialViewModel.closedBranchCount}
+                </p>
                 <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Total Gerai</p>
               </div>
               <div class="rounded-[1.8rem] border border-white/70 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
-                <p class="text-3xl font-black text-[#7a1200]">16-25</p>
-                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Maret 2026</p>
+                <p data-public-open-count class="text-3xl font-black text-[#7a1200]">
+                  {initialViewModel.openBranchCount}
+                </p>
+                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Buka</p>
               </div>
               <div class="rounded-[1.8rem] border border-white/70 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
-                <p class="text-sm font-black uppercase tracking-[0.24em] text-[#a12e00]">Sorotan</p>
-                <p class="mt-3 text-sm leading-7 text-[#7a1200]">18 Mar setengah hari, 19 Mar tutup total, 21 Mar buka 13.00-22.00.</p>
+                <p data-public-closed-count class="text-3xl font-black text-[#7a1200]">
+                  {initialViewModel.closedBranchCount}
+                </p>
+                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Tutup</p>
               </div>
             </div>
           </div>
@@ -300,304 +180,301 @@ const schedule = [
 
         <section class="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:gap-6">
           <div class="rounded-[2.1rem] border border-white/70 bg-white/55 p-6 shadow-[0_20px_60px_rgba(173,62,0,0.10)] backdrop-blur-md">
-            <p class="text-xs font-black uppercase tracking-[0.32em] text-[#a12e00]">Panduan Warna</p>
-            <h2 class="display-font mt-4 text-[1.9rem] font-black leading-tight text-[#7a1200]">Cepat Dibaca, Cepat Diputuskan</h2>
+            <p class="text-xs font-black uppercase tracking-[0.32em] text-[#a12e00]">Panduan Status</p>
+            <h2 class="display-font mt-4 text-[1.9rem] font-black leading-tight text-[#7a1200]">
+              Cepat Dibaca, Cepat Diputuskan
+            </h2>
             <div class="mt-6 space-y-4">
               <div class="rounded-[1.5rem] border border-[#ff0000]/10 bg-white/85 p-5">
-                <span class="inline-flex rounded-full bg-[#7a1200] px-3 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-white">Normal / Terbatas</span>
-                <p class="mt-4 text-sm leading-7 text-[#8a2a08]">Kartu terang untuk operasional reguler atau sebagian gerai aktif.</p>
+                <span class="inline-flex rounded-full bg-[#7a1200] px-3 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-white">
+                  Normal
+                </span>
+                <p class="mt-4 text-sm leading-7 text-[#8a2a08]">
+                  Status live tetap menegaskan kondisi normal, jadi pengunjung tidak perlu menebak apakah data sedang kosong atau semua gerai memang aktif.
+                </p>
               </div>
               <div class="rounded-[1.5rem] border border-[#ffc300]/40 bg-[#fff5dc] p-5">
-                <span class="inline-flex rounded-full bg-[#ffc300] px-3 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-[#7a1200]">Setengah Hari</span>
-                <p class="mt-4 text-sm leading-7 text-[#8a2a08]">Dipakai pada Pengerupukan dan Idul Fitri dengan jam khusus.</p>
+                <span class="inline-flex rounded-full bg-[#ffc300] px-3 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-[#7a1200]">
+                  Terbatas / Setengah Hari
+                </span>
+                <p class="mt-4 text-sm leading-7 text-[#8a2a08]">
+                  Gerai aktif dan gerai tutup ditampilkan terpisah agar keputusan operasional bisa dibaca dalam sekali lihat.
+                </p>
               </div>
-              <div class="rounded-[1.5rem] border border-[#ff0000] bg-[linear-gradient(135deg,#ff0000_0%,#cc0000_100%)] p-5 text-white">
-                <span class="inline-flex rounded-full bg-white px-3 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-[#ff0000]">Tutup Total</span>
-                <p class="mt-4 text-sm leading-7 text-white/85">Nyepi ditampilkan merah solid agar langsung menonjol di layar.</p>
+              <div class="rounded-[1.5rem] border border-[#ff0000] bg-[linear-gradient(135deg,#ff0000_0%,#c60000_100%)] p-5 text-white">
+                <span class="inline-flex rounded-full bg-white px-3 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-[#ff0000]">
+                  Tidak Tersedia
+                </span>
+                <p class="mt-4 text-sm leading-7 text-white/85">
+                  Saat koneksi live belum tersedia, halaman menunjukkan kondisi unavailable secara eksplisit daripada meninggalkan panel kosong.
+                </p>
               </div>
             </div>
           </div>
 
-          <div class="rounded-[2.1rem] border border-white/70 bg-white/55 p-6 shadow-[0_20px_60px_rgba(173,62,0,0.10)] backdrop-blur-md">
+          <section class="rounded-[2.1rem] border border-white/70 bg-white/55 p-6 shadow-[0_20px_60px_rgba(173,62,0,0.10)] backdrop-blur-md">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p class="text-xs font-black uppercase tracking-[0.32em] text-[#a12e00]">Daftar Jadwal</p>
-                <h2 class="display-font mt-3 text-[2rem] font-black leading-tight text-[#7a1200]">Operasional Per Tanggal</h2>
+                <p class="text-xs font-black uppercase tracking-[0.32em] text-[#a12e00]">Gerai Terdampak</p>
+                <h2 class="display-font mt-3 text-[2rem] font-black leading-tight text-[#7a1200]">
+                  Status Cabang Saat Ini
+                </h2>
               </div>
               <p class="max-w-sm text-sm leading-7 text-[#8a2a08]">
-                Kartu yang cocok dengan tanggal hari ini akan otomatis disorot.
+                Daftar ini mengikuti payload `publicCurrentStatus`, jadi UI tidak lagi membangun ulang aturan status dari jadwal statis.
               </p>
             </div>
-          </div>
-        </section>
 
-        <section aria-labelledby="jadwal-list">
-          <div class="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
-            {
-              schedule.map((item, index) => (
-                <article
-                  class:list={[
-                    "rise-card relative overflow-hidden rounded-[2.1rem] border p-6 shadow-[0_20px_60px_rgba(173,62,0,0.10)] transition duration-300",
-                    item.type === "closed"
-                      ? "border-[#ff0000] bg-[linear-gradient(135deg,#ff0000_0%,#c60000_100%)] text-white md:col-span-2 2xl:col-span-3"
-                      : item.type === "halfday"
-                        ? "border-[#ffc300]/45 bg-[linear-gradient(135deg,#fff9eb_0%,#fff2d2_100%)]"
-                        : item.type === "lebaran"
-                          ? "border-[#ffc300]/35 bg-[linear-gradient(135deg,#fff3e7_0%,#fffdf8_100%)]"
-                          : "border-white/70 bg-[linear-gradient(135deg,rgba(255,255,255,0.93)_0%,rgba(255,244,237,0.92)_100%)] backdrop-blur hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(173,62,0,0.12)]",
-                  ]}
-                  data-date={item.date}
-                  style={`animation-delay: ${index * 70}ms;`}
-                >
-                  <div
-                    aria-hidden="true"
-                    class:list={[
-                      "absolute inset-x-0 top-0 h-1.5",
-                      item.type === "closed"
-                        ? "bg-white/45"
-                        : item.type === "halfday" || item.type === "lebaran"
-                          ? "bg-[#ffc300]"
-                          : "bg-[#ff0000]",
-                    ]}
-                  />
-
-                  <div class="relative flex flex-col gap-6">
-                    <div class="flex items-start justify-between gap-5">
-                      <div class="flex items-start gap-4">
-                        <div class:list={[
-                          "flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-[1.5rem] shadow-[0_16px_36px_rgba(122,18,0,0.12)]",
-                          item.type === "closed" ? "bg-white text-[#ff0000]" : "bg-[#7a1200] text-[#fff8f3]",
-                        ]}>
-                          <span class="display-font text-2xl font-black leading-none">{item.dayNumber}</span>
-                          <span class="mt-1 text-[10px] font-black uppercase tracking-[0.28em]">Mar</span>
-                        </div>
-
-                        <div>
-                          <p class:list={[
-                            "text-xs font-black uppercase tracking-[0.28em]",
-                            item.type === "closed" ? "text-white/75" : "text-[#a12e00]",
-                          ]}>
-                            {item.label}
-                          </p>
-                          <h3
-                            id={item.date === schedule[0].date ? "jadwal-list" : undefined}
-                            class:list={[
-                              "display-font mt-3 text-[1.75rem] font-black leading-tight",
-                              item.type === "closed" ? "text-white" : "text-[#7a1200]",
-                            ]}
-                          >
-                            {item.title}
-                          </h3>
-                          <p class:list={[
-                            "mt-3 text-sm font-semibold",
-                            item.type === "closed" ? "text-white/85" : "text-[#8a2a08]",
-                          ]}>
-                            {item.displayDate}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div class="flex flex-col items-end gap-2">
-                        <span class:list={[
-                          "rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em]",
-                          item.type === "closed" ? "bg-white text-[#ff0000]" : "bg-[#ffc300] text-[#7a1200]",
-                        ]}>
-                          {item.hours}
-                        </span>
-                        <span class:list={[
-                          "today-chip hidden rounded-full border px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em]",
-                          item.type === "closed"
-                            ? "border-white/45 bg-white/15 text-white"
-                            : "border-[#ff0000]/10 bg-white text-[#ff0000]",
-                        ]}>
-                          Hari Ini
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2.5">
-                      <span class:list={[
-                        "rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.2em]",
-                        item.type === "closed" ? "bg-white/12 text-white" : "bg-[#7a1200] text-[#fff8f3]",
-                      ]}>
-                        {item.openCount} gerai buka
-                      </span>
-                      <span class:list={[
-                        "rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.2em]",
-                        item.type === "closed" ? "bg-white/12 text-white" : "bg-white text-[#a12e00]",
-                      ]}>
-                        {item.closedCount} gerai tutup
-                      </span>
-                    </div>
-
-                    <p class:list={[
-                      "text-sm leading-7",
-                      item.type === "closed" ? "text-white/85" : "text-[#8a2a08]",
-                    ]}>
-                      {item.note}
+            <div class="mt-6 grid gap-5 md:grid-cols-2">
+              <article class="rounded-[1.8rem] border border-[#ff0000]/10 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Buka</p>
+                    <p data-public-open-summary class="mt-2 text-sm leading-7 text-[#8a2a08]">
+                      Menyiapkan daftar gerai aktif dari status live.
                     </p>
-
-                    {
-                      item.type === "closed" ? (
-                        <div class="rounded-[1.6rem] border border-white/20 bg-white/10 p-5">
-                          <p class="text-xs font-black uppercase tracking-[0.24em] text-white/70">Gerai Terdampak</p>
-                          <ul class="mt-4 flex flex-wrap gap-2.5">
-                            {
-                              item.closedBranches.map((branch) => (
-                                <li class="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold text-white">
-                                  {branch}
-                                </li>
-                              ))
-                            }
-                          </ul>
-                        </div>
-                      ) : (
-                        <div class="grid gap-4">
-                          <div class="rounded-[1.6rem] border border-[#ff0000]/10 bg-white/80 p-5">
-                            <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Buka</p>
-                            <ul class="mt-4 flex flex-wrap gap-2.5">
-                              {
-                                item.openBranches.map((branch) => (
-                                  <li class="rounded-full border border-[#ff0000]/10 bg-[#fff7f1] px-3 py-1 text-xs font-bold text-[#7a1200]">
-                                    {branch}
-                                  </li>
-                                ))
-                              }
-                            </ul>
-                          </div>
-
-                          <div class="rounded-[1.6rem] border border-[#ff0000]/10 bg-white/70 p-5">
-                            <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Tutup</p>
-                            {
-                              item.closedBranches.length > 0 ? (
-                                <ul class="mt-4 flex flex-wrap gap-2.5">
-                                  {
-                                    item.closedBranches.map((branch) => (
-                                      <li class="rounded-full border border-[#7a1200]/10 bg-white px-3 py-1 text-xs font-bold text-[#8a2a08]">
-                                        {branch}
-                                      </li>
-                                    ))
-                                  }
-                                </ul>
-                              ) : (
-                                <p class="mt-4 text-sm font-semibold leading-7 text-[#7a1200]">
-                                  Tidak ada. Semua gerai beroperasi normal.
-                                </p>
-                              )
-                            }
-                          </div>
-                        </div>
-                      )
-                    }
                   </div>
-                </article>
-              ))
-            }
-          </div>
-        </section>
-      </section>
+                  <span
+                    class="rounded-full bg-[#7a1200] px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-white"
+                  >
+                    Live
+                  </span>
+                </div>
+                <ul data-public-open-branches class="mt-5 flex flex-wrap gap-2.5">
+                  <li class="rounded-full border border-[#ff0000]/10 bg-[#fff7f1] px-3 py-1 text-xs font-bold text-[#7a1200]">
+                    Memuat status operasional...
+                  </li>
+                </ul>
+              </article>
 
-      <section id="end-screen" class="hidden min-h-screen items-center justify-center py-8" aria-live="polite">
-        <div class="w-full max-w-3xl rounded-[2.9rem] border border-white/70 bg-white/60 px-6 py-12 text-center shadow-[0_30px_100px_rgba(168,62,0,0.14)] backdrop-blur-md sm:px-12 sm:py-18">
-          <img src="/logo.png" alt="Ayam Guling Enakko Logo" class="mx-auto h-20 mb-4" />
-          <span class="inline-flex rounded-full bg-[#ffc300] px-4 py-1 text-xs font-black uppercase tracking-[0.24em] text-[#7a1200]">
-            Coming Soon
-          </span>
-          <h2 class="display-font mt-6 text-[2.3rem] font-black leading-tight text-[#ff0000] sm:text-[3.6rem]">
-            Terima Kasih, Operasional Telah Kembali Normal.
-          </h2>
-          <p class="mx-auto mt-5 max-w-2xl text-base leading-8 text-[#8a2a08] sm:text-lg">
-            Nantikan promo kami selanjutnya. Jadwal khusus Nyepi & Lebaran 2026 sudah selesai dan seluruh gerai kembali beroperasi normal.
-          </p>
-        </div>
+              <article class="rounded-[1.8rem] border border-[#ff0000]/10 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Tutup</p>
+                    <p data-public-closed-summary class="mt-2 text-sm leading-7 text-[#8a2a08]">
+                      Panel ini akan menunjukkan gerai yang sedang tidak aktif.
+                    </p>
+                  </div>
+                  <span
+                    class="rounded-full border border-[#7a1200]/10 bg-white px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-[#a12e00]"
+                  >
+                    Sinkron
+                  </span>
+                </div>
+                <ul data-public-closed-branches class="mt-5 flex flex-wrap gap-2.5">
+                  <li class="rounded-full border border-[#7a1200]/10 bg-white px-3 py-1 text-xs font-bold text-[#8a2a08]">
+                    Memuat status operasional...
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </section>
+        </section>
       </section>
     </main>
 
-    <script id="schedule-data" type="application/json">{JSON.stringify(schedule)}</script>
-
     <script>
-      const scheduleDataElement = document.getElementById("schedule-data");
-      const statusShell = document.getElementById("status-shell");
-      const statusBanner = document.getElementById("status-banner");
-      const currentDateLabel = document.getElementById("current-date-label");
-      const scheduleContent = document.getElementById("schedule-content");
-      const endScreen = document.getElementById("end-screen");
-      const cardElements = Array.from(document.querySelectorAll("[data-date]"));
-      const scheduleItems = scheduleDataElement ? JSON.parse(scheduleDataElement.textContent || "[]") : [];
+      import { disconnectPublicStatusClient, subscribePublicCurrentStatus } from "../lib/spacetimedb/public-status-client";
+      import { buildPublicStatusViewModel } from "../lib/public-status/view-model";
 
-      const formatKey = (date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
+      const currentDateLabel = document.getElementById("current-date-label");
+      const statusShell = document.getElementById("status-shell");
+      const statusLabel = document.querySelector("[data-public-status-label]");
+      const statusHeadline = document.querySelector("[data-public-headline]");
+      const statusBanner = document.querySelector("[data-public-status-banner]");
+      const fallbackChip = document.querySelector("[data-public-fallback-chip]");
+      const connectionNote = document.querySelector("[data-public-connection-note]");
+      const openCount = document.querySelector("[data-public-open-count]");
+      const closedCount = document.querySelector("[data-public-closed-count]");
+      const totalCount = document.querySelector("[data-public-total-count]");
+      const openSummary = document.querySelector("[data-public-open-summary]");
+      const closedSummary = document.querySelector("[data-public-closed-summary]");
+      const openBranchesList = document.querySelector("[data-public-open-branches]");
+      const closedBranchesList = document.querySelector("[data-public-closed-branches]");
+
+      const connectionNotes = {
+        loading: "Menghubungkan halaman dengan database realtime.",
+        "ready-normal": "Status live aktif dan semua gerai sedang berjalan normal.",
+        "ready-special": "Status live aktif dan pembatasan cabang sedang diterapkan.",
+        unavailable: "Koneksi live belum tersedia. Coba muat ulang dalam beberapa saat.",
       };
 
-      const today = new Date();
-      const localToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      const todayKey = formatKey(localToday);
-      const startDate = new Date(2026, 2, 16);
-      const endDate = new Date(2026, 2, 25);
-
-      currentDateLabel.textContent = new Intl.DateTimeFormat("id-ID", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }).format(today);
-
-      if (localToday > endDate) {
-        scheduleContent.classList.add("hidden");
-        endScreen.classList.remove("hidden");
-        endScreen.classList.add("flex");
-      } else {
-        const todaySchedule = scheduleItems.find((item) => item.date === todayKey);
-
-        const toneMap = {
-          normal: ["border-white/12", "bg-white/10"],
-          limited: ["border-white/12", "bg-white/10"],
-          halfday: ["border-[#ffc300]/45", "bg-[rgba(255,195,0,0.16)]"],
-          lebaran: ["border-[#ffc300]/40", "bg-[rgba(255,195,0,0.18)]"],
-          closed: ["border-white/5", "bg-[#ff0000]"],
-          default: ["border-white/12", "bg-white/10"],
-        };
-
-        const applyTone = (tone) => {
-          const tones = toneMap[tone] || toneMap.default;
-          statusShell.classList.remove(
-            "border-white/12",
-            "bg-white/10",
-            "border-[#ffc300]/45",
-            "bg-[rgba(255,195,0,0.16)]",
-            "border-[#ffc300]/40",
-            "bg-[rgba(255,195,0,0.18)]",
-            "border-white/5",
-            "bg-[#ff0000]"
-          );
-          statusShell.classList.add(...tones);
-        };
-
-        if (todaySchedule) {
-          const prefix = "HARI INI:";
-          statusBanner.textContent = `${prefix} ${todaySchedule.bannerMessage}`;
-          applyTone(todaySchedule.type);
-        } else if (localToday < startDate) {
-          statusBanner.textContent = "Pengumuman ini berlaku mulai 16 Maret 2026. Seluruh detail operasional sudah tersedia di daftar jadwal di bawah.";
-          applyTone("default");
-        } else {
-          statusBanner.textContent = "Periode operasional khusus tidak aktif pada tanggal ini. Silakan cek daftar jadwal untuk referensi lengkap.";
-          applyTone("default");
+      const renderBranchList = (element, branches, emptyText, accent) => {
+        if (!element) {
+          return;
         }
 
-        cardElements.forEach((card) => {
-          if (card.getAttribute("data-date") === todayKey) {
-            card.classList.add("ring-4", "ring-[#ff0000]", "ring-offset-4", "ring-offset-[#ffe4d6]", "scale-[1.01]");
-            const todayChip = card.querySelector(".today-chip");
-            if (todayChip) {
-              todayChip.classList.remove("hidden");
-            }
+        element.replaceChildren();
+
+        if (branches.length === 0) {
+          const emptyItem = document.createElement("li");
+          emptyItem.className =
+            accent === "open"
+              ? "rounded-full border border-[#ff0000]/10 bg-[#fff7f1] px-3 py-1 text-xs font-bold text-[#7a1200]"
+              : "rounded-full border border-[#7a1200]/10 bg-white px-3 py-1 text-xs font-bold text-[#8a2a08]";
+          emptyItem.textContent = emptyText;
+          element.append(emptyItem);
+          return;
+        }
+
+        branches.forEach((branch) => {
+          const item = document.createElement("li");
+          item.className =
+            accent === "open"
+              ? "rounded-full border border-[#ff0000]/10 bg-[#fff7f1] px-3 py-1 text-xs font-bold text-[#7a1200]"
+              : "rounded-full border border-[#7a1200]/10 bg-white px-3 py-1 text-xs font-bold text-[#8a2a08]";
+
+          item.textContent = branch.name;
+
+          if (branch.isTargeted) {
+            item.textContent = `${branch.name} · target`;
           }
+
+          element.append(item);
         });
-      }
+      };
+
+      const getOpenSummary = (model) => {
+        if (model.presentationState === "loading") {
+          return "Memuat daftar gerai aktif dari status realtime.";
+        }
+
+        if (model.presentationState === "unavailable") {
+          return "Status operasional belum tersedia.";
+        }
+
+        if (model.isNormalFallback) {
+          return "Semua cabang aktif mengikuti operasional reguler.";
+        }
+
+        return `${model.openBranchCount} gerai aktif untuk status yang sedang berjalan.`;
+      };
+
+      const getClosedSummary = (model) => {
+        if (model.presentationState === "loading") {
+          return "Menunggu daftar gerai yang sedang tidak aktif.";
+        }
+
+        if (model.presentationState === "unavailable") {
+          return "Status operasional belum tersedia.";
+        }
+
+        if (model.isNormalFallback && model.closedBranchCount === 0) {
+          return "Tidak ada gerai yang tutup pada kondisi normal ini.";
+        }
+
+        return `${model.closedBranchCount} gerai sedang tidak aktif pada status saat ini.`;
+      };
+
+      const render = (model) => {
+        if (!statusShell || !statusLabel || !statusHeadline || !statusBanner || !connectionNote) {
+          return;
+        }
+
+        statusShell.dataset.publicState = model.presentationState;
+        statusShell.dataset.statusTone = model.statusTone;
+        statusLabel.textContent = model.statusLabel;
+        statusHeadline.textContent = model.headline;
+        statusBanner.textContent = model.banner;
+        connectionNote.textContent = connectionNotes[model.presentationState];
+
+        if (openCount) {
+          openCount.textContent = String(model.openBranchCount);
+        }
+
+        if (closedCount) {
+          closedCount.textContent = String(model.closedBranchCount);
+        }
+
+        if (totalCount) {
+          totalCount.textContent = String(model.openBranchCount + model.closedBranchCount);
+        }
+
+        if (openSummary) {
+          openSummary.textContent = getOpenSummary(model);
+        }
+
+        if (closedSummary) {
+          closedSummary.textContent = getClosedSummary(model);
+        }
+
+        const isFallbackNormal = model.isNormalFallback;
+
+        if (fallbackChip) {
+          fallbackChip.classList.toggle("hidden", !isFallbackNormal);
+          fallbackChip.textContent = isFallbackNormal ? "Operasional Normal" : "";
+        }
+
+        renderBranchList(
+          openBranchesList,
+          model.openBranches,
+          model.presentationState === "unavailable"
+            ? "Status operasional belum tersedia."
+            : "Memuat status operasional...",
+          "open",
+        );
+
+        renderBranchList(
+          closedBranchesList,
+          model.closedBranches,
+          model.presentationState === "loading"
+            ? "Memuat status operasional..."
+            : isFallbackNormal
+              ? "Tidak ada. Semua gerai beroperasi normal."
+              : "Status operasional belum tersedia.",
+          "closed",
+        );
+      };
+
+      const updateCurrentDateLabel = () => {
+        if (!currentDateLabel) {
+          return;
+        }
+
+        currentDateLabel.textContent = new Intl.DateTimeFormat("id-ID", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date());
+      };
+
+      let hasResolvedPayload = false;
+      const loadingViewModel = buildPublicStatusViewModel(null, "loading");
+      const unavailableTimer = window.setTimeout(() => {
+        if (!hasResolvedPayload) {
+          render(buildPublicStatusViewModel(null, "unavailable"));
+        }
+      }, 3000);
+
+      updateCurrentDateLabel();
+      render(loadingViewModel);
+
+      const unsubscribe = subscribePublicCurrentStatus((payload) => {
+        if (payload) {
+          hasResolvedPayload = true;
+          window.clearTimeout(unavailableTimer);
+          render(buildPublicStatusViewModel(payload, "ready"));
+          updateCurrentDateLabel();
+          return;
+        }
+
+        if (hasResolvedPayload) {
+          render(buildPublicStatusViewModel(null, "unavailable"));
+        }
+      });
+
+      window.addEventListener(
+        "pagehide",
+        () => {
+          window.clearTimeout(unavailableTimer);
+          unsubscribe();
+          disconnectPublicStatusClient();
+        },
+        { once: true },
+      );
     </script>
   </body>
 </html>
