@@ -3,7 +3,6 @@ import {
   announcements,
   branches,
   operationalSchema,
-  phaseOneSeedState,
   seedNormalOperation,
   statusKinds,
 } from "./schema";
@@ -16,6 +15,13 @@ import {
   upsertAnnouncement,
 } from "./reducers";
 import { publicCurrentStatus, publicReadModels } from "./publicReadModel";
+import {
+  phaseOneNormalBaseline,
+  phaseOneSeedDescription,
+  phaseOneSeedState,
+  seedAnnouncementBranchTargets,
+  seedBranches,
+} from "./seeds";
 
 export {
   announcementBranchTargets,
@@ -24,11 +30,15 @@ export {
   createBranch,
   deactivateBranch,
   operationalSchema,
+  phaseOneNormalBaseline,
+  phaseOneSeedDescription,
   phaseOneSeedState,
   publicCurrentStatus,
   publicReadModels,
   reducers,
   seedNormalOperation,
+  seedAnnouncementBranchTargets,
+  seedBranches,
   setAnnouncementBranchTargets,
   statusKinds,
   updateBranch,
@@ -65,6 +75,11 @@ export const moduleContract = {
   readModels: publicReadModels,
   reducers,
   seedData: phaseOneSeedState,
+  seeds: {
+    source: "spacetimedb/src/seeds.ts",
+    description: phaseOneSeedDescription,
+    baseline: phaseOneNormalBaseline,
+  },
 };
 
 export default moduleContract;
