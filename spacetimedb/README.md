@@ -26,11 +26,154 @@ Run these commands from the repository root:
 
 The phase baseline stays in TypeScript so the Astro app and the module workflow share one toolchain and one repeatable command surface.
 
+## Local Auth Config
+
+Copy the repository root `.env.example` to `.env` before validating reducer writes. The reducer auth helper reads its config from the same values you provide to your local claim/test harness:
+
+- `SPACETIMEDB_AUTH_ISSUER` - expected OIDC issuer for reducer claims
+- `SPACETIMEDB_AUTH_AUDIENCE` - audience that every write claim must include
+- `ENAKKO_ADMIN_EMAILS` - comma-separated admin allowlist used by `assertAdminClaims`
+
+## Local Seed Baseline
+
+`spacetimedb/src/seeds.ts` is the Phase 1 baseline. It exports the current 12 Enakko branches and one explicit published normal announcement, so local development starts from a real `statusKind: "normal"` state instead of an empty database.
+
 ## Auth Direction
 
 Phase 1 will validate admin writes through reducer-side claim checks, not frontend-only guards. Start with a SpacetimeAuth-compatible issuer and audience flow so reducers can stay provider-agnostic while still enforcing admin-only mutations.
 
 If SpacetimeAuth beta behavior blocks local development or rollout, keep the reducer claim contract and switch to another OIDC-compatible issuer before changing reducer call sites.
+
+## Reducer Access Verification
+
+Use the seeded state from `spacetimedb/src/seeds.ts` and the guarded reducers in `spacetimedb/src/reducers.ts` to validate both unauthorized and authorized writes before Phase 2 or Phase 3 work starts.
+
+### 1. Build a shared auth config from `.env`
+
+```ts
+const authConfig = {
+  issuer: process.env.SPACETIMEDB_AUTH_ISSUER ?? "",
+  audience: process.env.SPACETIMEDB_AUTH_AUDIENCE ?? "",
+  adminEmails: (process.env.ENAKKO_ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean),
+};
+```
+
+### 2. Verify an unauthorized write is rejected
+
+```ts
+import { createBranch, phaseOneSeedState } from "./src/module";
+
+const unauthorizedContext = {
+  config: authConfig,
+  claims: {
+    issuer: authConfig.issuer,
+    audience: authConfig.audience,
+    email: "viewer@example.com",
+    roles: [],
+  },
+};
+
+createBranch.apply(
+  phaseOneSeedState,
+  {
+    branchId: "unauthorized-branch",
+    slug: "unauthorized-branch",
+    name: "Unauthorized Branch",
+    sortOrder: 99,
+  },
+  unauthorizedContext,
+);
+```
+
+Expected result:
+
+- `createBranch` throws before state changes because the email is not in `ENAKKO_ADMIN_EMAILS`
+- The same unauthorized behavior must hold for `updateBranch`, `deactivateBranch`, `upsertAnnouncement`, and `setAnnouncementBranchTargets`
+- Any issuer mismatch or missing `SPACETIMEDB_AUTH_AUDIENCE` match must also fail before a reducer returns a new state
+
+### 3. Verify an authorized admin write succeeds
+
+```ts
+import {
+  createBranch,
+  deactivateBranch,
+  phaseOneSeedState,
+  setAnnouncementBranchTargets,
+  updateBranch,
+  upsertAnnouncement,
+} from "./src/module";
+
+const adminEmail = authConfig.adminEmails[0];
+const authorizedContext = {
+  config: authConfig,
+  claims: {
+    issuer: authConfig.issuer,
+    audience: [authConfig.audience],
+    email: adminEmail,
+    roles: ["admin"],
+  },
+};
+
+const withCreatedBranch = createBranch.apply(
+  phaseOneSeedState,
+  {
+    branchId: "test-admin-branch",
+    slug: "test-admin-branch",
+    name: "Test Admin Branch",
+    sortOrder: 20,
+  },
+  authorizedContext,
+);
+
+const withUpdatedBranch = updateBranch.apply(
+  withCreatedBranch,
+  {
+    branchId: "test-admin-branch",
+    name: "Test Admin Branch Updated",
+  },
+  authorizedContext,
+);
+
+const withDeactivatedBranch = deactivateBranch.apply(
+  withUpdatedBranch,
+  { branchId: "test-admin-branch" },
+  authorizedContext,
+);
+
+const withAnnouncement = upsertAnnouncement.apply(
+  withDeactivatedBranch,
+  {
+    announcementId: "authorized-check",
+    title: "Authorized reducer check",
+    message: "Admin-only reducer flow is working.",
+    statusKind: "limited",
+    startsAt: null,
+    endsAt: null,
+    isPublished: true,
+    priority: 5,
+  },
+  authorizedContext,
+);
+
+const finalState = setAnnouncementBranchTargets.apply(
+  withAnnouncement,
+  {
+    announcementId: "authorized-check",
+    branchIds: ["panjer", "kreneng"],
+  },
+  authorizedContext,
+);
+```
+
+Expected result:
+
+- `createBranch`, `updateBranch`, and `deactivateBranch` all return a new state without auth errors
+- `upsertAnnouncement` stores the explicit published announcement
+- `setAnnouncementBranchTargets` writes the branch target join rows for `panjer` and `kreneng`
+- Comparing `phaseOneSeedState` with `finalState` should show only the authorized mutations above
 
 ## Fallback Rule
 
