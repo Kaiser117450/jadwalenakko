@@ -15,6 +15,9 @@ Status operasional yang tampil ke publik harus selalu cepat dibaca dan mudah dip
 - ✓ Pengunjung dapat melihat halaman publik jadwal operasional yang terbrand untuk Enakko — existing
 - ✓ Halaman dapat menyorot status hari ini berdasarkan tanggal browser pengunjung — existing
 - ✓ Halaman dapat menampilkan status normal, terbatas, setengah hari, atau tutup total lengkap dengan daftar gerai buka/tutup — existing
+- ✓ Branch master data dan baseline status operasional sekarang sudah dimodelkan di fondasi SpacetimeDB repo ini — validated in Phase 1
+- ✓ Akses ubah data operasional sekarang dibatasi di level reducer admin-only dengan validasi claim terpusat — validated in Phase 1
+- ✓ Jalur baca publik sudah dipersempit ke kontrak read model yang aman untuk integrasi frontend berikutnya — validated in Phase 1
 
 ### Active
 
@@ -22,7 +25,6 @@ Status operasional yang tampil ke publik harus selalu cepat dibaca dan mudah dip
 - [ ] Website publik menampilkan status operasional realtime dari SpacetimeDB tanpa redeploy
 - [ ] Admin dapat membuat pengumuman umum maupun pengumuman khusus per periode atau per gerai
 - [ ] Sistem tetap menampilkan keadaan normal dengan jelas saat tidak ada libur atau event khusus
-- [ ] Akses ubah data dibatasi untuk admin, sementara data publik tetap aman dibaca pengunjung
 - [ ] Pengalaman baca status tetap cepat dan jelas di mobile maupun desktop
 
 ### Out of Scope
@@ -43,6 +45,12 @@ Pengguna utama ada dua:
 - Pengunjung publik yang hanya ingin tahu apakah gerai buka normal, ada jam khusus, atau ada gerai tertentu yang tutup
 - Admin operasional yang perlu mengubah status, jadwal, dan pengumuman secara cepat dari database
 
+## Current State
+
+Phase 1 selesai pada 2026-03-23. Repo sekarang punya fondasi SpacetimeDB yang konkret: workspace `spacetimedb/`, schema ter-normalisasi untuk branch dan announcement, reducer write surface yang dijaga auth admin, seed baseline 12 gerai Enakko plus status normal eksplisit, dan `publicCurrentStatus` sebagai kontrak baca publik.
+
+Website Astro publik belum dipindahkan ke data live; `src/pages/index.astro` masih memegang array hard-coded sebagai legacy brownfield sampai Phase 2 memigrasikan rendering ke read model realtime.
+
 ## Constraints
 
 - **Tech stack**: Pertahankan Astro/Tailwind sebagai basis frontend brownfield — sudah ada UI publik yang bisa dievolusi
@@ -56,11 +64,11 @@ Pengguna utama ada dua:
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Pertahankan website publik yang sudah ada lalu migrasikan datanya ke model realtime | Lebih cepat daripada membangun ulang dari nol, dan UI publik dasar sudah terbukti bekerja | — Pending |
-| Status normal dijadikan state data eksplisit, bukan sekadar "tidak ada pengumuman" | Kondisi normal adalah kasus utama dan harus tampil konsisten walau tidak ada event khusus | — Pending |
-| Pisahkan jalur baca publik dan jalur ubah admin di level data model | Dokumentasi SpacetimeDB menunjukkan baca publik dan mutasi via reducer adalah pola yang tepat untuk app realtime | — Pending |
+| Pertahankan website publik yang sudah ada lalu migrasikan datanya ke model realtime | Lebih cepat daripada membangun ulang dari nol, dan UI publik dasar sudah terbukti bekerja | Phase 1 validated the brownfield path by keeping the Astro page intact while moving new source-of-truth contracts into SpacetimeDB |
+| Status normal dijadikan state data eksplisit, bukan sekadar "tidak ada pengumuman" | Kondisi normal adalah kasus utama dan harus tampil konsisten walau tidak ada event khusus | Validated in Phase 1 through the explicit `normal` status kind and seeded normal baseline |
+| Pisahkan jalur baca publik dan jalur ubah admin di level data model | Dokumentasi SpacetimeDB menunjukkan baca publik dan mutasi via reducer adalah pola yang tepat untuk app realtime | Validated in Phase 1 through guarded reducers and the `publicCurrentStatus` read model |
 | Admin panel dibuat web-first di repo yang sama | Kebutuhan utama adalah kecepatan operasi dan konsistensi data, bukan ekspansi kanal | — Pending |
-| Gunakan autentikasi admin yang kompatibel dengan identitas/claim SpacetimeDB | Reducer context dan auth claims SpacetimeDB memberi fondasi untuk pembatasan akses admin | — Pending |
+| Gunakan autentikasi admin yang kompatibel dengan identitas/claim SpacetimeDB | Reducer context dan auth claims SpacetimeDB memberi fondasi untuk pembatasan akses admin | Validated in Phase 1 through issuer, audience, and admin-allowlist claim checks at reducer boundaries |
 
 ## Evolution
 
@@ -80,4 +88,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after initialization*
+*Last updated: 2026-03-23 after Phase 1 completion*
