@@ -70,7 +70,7 @@ export type {
 
 export const moduleContract = {
   moduleRoot: "spacetimedb",
-  entrypoint: "spacetimedb/src/module.ts",
+  entrypoint: "spacetimedb/src/index.ts",
   schema: operationalSchema,
   readModels: publicReadModels,
   reducers,

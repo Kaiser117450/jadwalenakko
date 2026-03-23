@@ -11,8 +11,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "spacetimedb:dev": "spacetime dev --project-path ./spacetimedb",
-    "spacetimedb:publish": "spacetime publish enakko-jadwal-local --project-path ./spacetimedb",
+    "spacetimedb:dev": "node ./scripts/spacetimedb-cli.mjs dev c2005fe19a7ffd63d4d7f94d3971b38bce7c4ae5fd50810f3ab5831e42ba22ad --module-path ./spacetimedb --module-bindings-path ./src/lib/spacetimedb/module_bindings --client-lang typescript --yes",
+    "spacetimedb:publish": "node ./scripts/spacetimedb-cli.mjs publish c2005fe19a7ffd63d4d7f94d3971b38bce7c4ae5fd50810f3ab5831e42ba22ad --module-path ./spacetimedb --yes",
     "spacetimedb:generate": "node ./scripts/generate-spacetimedb-bindings.mjs"
   },
   "dependencies": {

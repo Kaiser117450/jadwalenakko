@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
-import { mkdirSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
@@ -13,12 +13,18 @@ const databaseName =
   process.env.SPACETIMEDB_DATABASE ??
   modulePackage.spacetimedb.databaseName ??
   "enakko-jadwal-local";
-const cli = process.env.SPACETIMEDB_CLI ?? "spacetime";
+const bundledWindowsCli =
+  process.platform === "win32" && process.env.LOCALAPPDATA
+    ? join(process.env.LOCALAPPDATA, "SpacetimeDB", "spacetime.exe")
+    : null;
+const cli =
+  process.env.SPACETIMEDB_CLI ??
+  (bundledWindowsCli && existsSync(bundledWindowsCli) ? bundledWindowsCli : "spacetime");
 const args = [
   "generate",
   "--lang",
   "typescript",
-  "--project-path",
+  "--module-path",
   moduleDir,
   "--out-dir",
   outputDir,
@@ -28,12 +34,14 @@ if (process.env.SPACETIMEDB_SERVER) {
   args.push("--server", process.env.SPACETIMEDB_SERVER);
 }
 
-args.push(databaseName);
+if (databaseName) {
+  args.push(databaseName);
+}
 mkdirSync(outputDir, { recursive: true });
 
 const result = spawnSync(cli, args, {
   stdio: "inherit",
-  shell: process.platform === "win32",
+  shell: false,
 });
 
 if (result.error) {

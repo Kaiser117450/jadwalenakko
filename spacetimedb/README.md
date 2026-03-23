@@ -1,11 +1,11 @@
 # SpacetimeDB Module Workspace
 
-This directory is the agreed TypeScript SpacetimeDB module root for Phase 1. The canonical entrypoint for the workspace is `spacetimedb/src/module.ts`, and generated browser bindings are written to `src/lib/spacetimedb/module_bindings`.
+This directory is the agreed TypeScript SpacetimeDB module root for Phase 1. The canonical runtime entrypoint for the workspace is `spacetimedb/src/index.ts`, while `spacetimedb/src/module.ts` remains the repo-facing contract surface for types, seeds, and read-model exports. Generated browser bindings are written to `src/lib/spacetimedb/module_bindings`.
 
 ## Prerequisites
 
 - Node.js 18 or newer for the Astro workspace and helper scripts
-- A `spacetime` CLI install available on `PATH`
+- A `spacetime` CLI install available on `PATH` or the default Windows install at `%LOCALAPPDATA%\SpacetimeDB\spacetime.exe`
 
 ## Repo Script Contract
 
@@ -15,13 +15,15 @@ Run these commands from the repository root:
 - `npm run spacetimedb:publish`
 - `npm run spacetimedb:generate`
 
+`npm run spacetimedb:dev` and `npm run spacetimedb:publish` resolve the SpacetimeDB CLI through `scripts/spacetimedb-cli.mjs`, so Windows installs under `%LOCALAPPDATA%\SpacetimeDB\spacetime.exe` work even when `spacetime` is not on `PATH`.
+
 `npm run spacetimedb:generate` uses `scripts/generate-spacetimedb-bindings.mjs` and writes generated output into `src/lib/spacetimedb/module_bindings`. Treat that directory as generated code and do not hand-edit it.
 
 ## Local Workflow
 
 1. Install root dependencies with `npm install`.
 2. Iterate on the TypeScript module rooted at `spacetimedb/` with `npm run spacetimedb:dev`.
-3. Publish the local module contract with `npm run spacetimedb:publish`.
+3. Publish the live module contract with `npm run spacetimedb:publish`.
 4. Regenerate browser bindings with `npm run spacetimedb:generate`.
 
 The phase baseline stays in TypeScript so the Astro app and the module workflow share one toolchain and one repeatable command surface.

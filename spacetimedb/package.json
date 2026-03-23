@@ -4,9 +4,13 @@
   "private": true,
   "type": "module",
   "description": "Phase 1 SpacetimeDB module workspace for Enakko operational status data.",
+  "dependencies": {
+    "spacetimedb": "^2.0.4",
+    "typescript": "^5.9.3"
+  },
   "spacetimedb": {
-    "databaseName": "enakko-jadwal-local",
+    "databaseName": "c2005fe19a7ffd63d4d7f94d3971b38bce7c4ae5fd50810f3ab5831e42ba22ad",
     "bindingOutput": "../src/lib/spacetimedb/module_bindings",
-    "entrypoint": "./src/module.ts"
+    "entrypoint": "./src/index.ts"
   }
 }
