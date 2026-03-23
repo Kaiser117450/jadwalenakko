@@ -12,6 +12,7 @@
 - [ ] **PUB-03**: Visitor can still see a clear "normal operation" message when no special announcement is active
 - [ ] **PUB-04**: Visitor sees public status updates from database-backed realtime data without waiting for a code redeploy
 - [ ] **PUB-05**: Visitor sees status that follows a defined effective period and canonical operational timezone
+- [ ] **PUB-06**: Visitor can read the current operational status clearly on both mobile and desktop layouts
 
 ### Admin Operations
 
@@ -55,25 +56,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PUB-01 | TBD | Pending |
-| PUB-02 | TBD | Pending |
-| PUB-03 | TBD | Pending |
-| PUB-04 | TBD | Pending |
-| PUB-05 | TBD | Pending |
-| ADMN-01 | TBD | Pending |
-| ADMN-02 | TBD | Pending |
-| ADMN-03 | TBD | Pending |
-| ADMN-04 | TBD | Pending |
-| ADMN-05 | TBD | Pending |
-| DATA-01 | TBD | Pending |
-| DATA-02 | TBD | Pending |
-| DATA-03 | TBD | Pending |
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| ADMN-01 | Phase 1 | Pending |
+| DATA-03 | Phase 2 | Pending |
+| PUB-01 | Phase 2 | Pending |
+| PUB-03 | Phase 2 | Pending |
+| PUB-04 | Phase 2 | Pending |
+| ADMN-02 | Phase 3 | Pending |
+| ADMN-04 | Phase 3 | Pending |
+| PUB-02 | Phase 3 | Pending |
+| ADMN-03 | Phase 4 | Pending |
+| ADMN-05 | Phase 4 | Pending |
+| PUB-05 | Phase 4 | Pending |
+| PUB-06 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 13 total
-- Mapped to phases: 0
-- Unmapped: 13
+- v1 requirements: 14 total
+- Mapped to phases: 14
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-23*
-*Last updated: 2026-03-23 after initial definition*
+*Last updated: 2026-03-23 after roadmap creation*
