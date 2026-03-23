@@ -1,3 +1,7 @@
 node_modules
 dist
 .astro
+spacetimedb/.spacetime/
+spacetimedb/build/
+spacetimedb/target/
+src/lib/spacetimedb/module_bindings/

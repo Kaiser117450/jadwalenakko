@@ -1,0 +1,12 @@
+{
+  "name": "@enakko/spacetimedb-module",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Phase 1 SpacetimeDB module workspace for Enakko operational status data.",
+  "spacetimedb": {
+    "databaseName": "enakko-jadwal-local",
+    "bindingOutput": "../src/lib/spacetimedb/module_bindings",
+    "entrypoint": "./src/module.ts"
+  }
+}

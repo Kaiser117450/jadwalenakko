@@ -3,11 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "spacetimedb"
+  ],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "spacetimedb:dev": "spacetime dev --project-path ./spacetimedb",
+    "spacetimedb:publish": "spacetime publish enakko-jadwal-local --project-path ./spacetimedb",
+    "spacetimedb:generate": "node ./scripts/generate-spacetimedb-bindings.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.0",
