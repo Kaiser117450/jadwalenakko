@@ -46,10 +46,10 @@ Plans:
   2. The public page clearly communicates normal operation even when no special event is active
   3. Public status changes appear without a rebuild or manual source edit
   4. The public UI consumes a stable read model instead of reconstructing rules from raw admin tables
-**Plans**: 3 plans
+**Plans**: 1/3 plans executed
 
 Plans:
-- [ ] 02-01: Create the public read model or public view for current operational status
+- [x] 02-01: Create the public read model or public view for current operational status
 - [ ] 02-02: Refactor the Astro homepage to consume generated bindings and live status data
 - [ ] 02-03: Rebuild public loading, empty, and normal-state UX around the realtime contract
 
@@ -107,7 +107,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. SpacetimeDB Foundation And Access Control | 3/3 | Complete | 01-01, 01-02, 01-03 |
-| 2. Public Realtime Status Board | 0/3 | Not started | - |
+| 2. Public Realtime Status Board | 1/3 | In Progress | 02-01 |
 | 3. Branch Operations Management | 0/2 | Not started | - |
 | 4. Announcement Scheduling And Status Rules | 0/3 | Not started | - |
 | 5. Readability And Launch Hardening | 0/2 | Not started | - |
