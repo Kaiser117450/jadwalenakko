@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01: Validate the local SpacetimeDB module path, auth approach, and generated binding workflow
-- [ ] 01-02: Design and implement normalized branch, status, and announcement schema plus reducers
+- [x] 01-02: Design and implement normalized branch, status, and announcement schema plus reducers
 - [ ] 01-03: Establish admin authorization checks and seed/dev data needed for downstream UI work
 
 ### Phase 2: Public Realtime Status Board
@@ -106,7 +106,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. SpacetimeDB Foundation And Access Control | 1/3 | In Progress | 01-01 |
+| 1. SpacetimeDB Foundation And Access Control | 2/3 | In Progress | 01-01, 01-02 |
 | 2. Public Realtime Status Board | 0/3 | Not started | - |
 | 3. Branch Operations Management | 0/2 | Not started | - |
 | 4. Announcement Scheduling And Status Rules | 0/3 | Not started | - |

@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 01-spacetimedb-foundation-and-access-control-01-PLAN.md
-last_updated: "2026-03-23T13:12:11.188Z"
+stopped_at: Completed 01-spacetimedb-foundation-and-access-control-02-PLAN.md
+last_updated: "2026-03-23T13:24:25.507Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -24,13 +24,13 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Position
 
 Phase: 01 (spacetimedb-foundation-and-access-control) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 1
+- Total plans completed: 2
 - Average duration: 4min
 - Total execution time: 0.1 hours
 
@@ -38,14 +38,15 @@ Plan: 2 of 3
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01 | 1 | 4min | 4min |
+| 01 | 2 | 8min | 4min |
 
 **Recent Trend:**
 
-- Last 5 plans: 4min
+- Last 5 plans: 4min, 4 min
 - Trend: Stable
 
 | Phase 01-spacetimedb-foundation-and-access-control P01 | 4min | 2 tasks | 11 files |
+| Phase 01-spacetimedb-foundation-and-access-control P02 | 4 min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -60,6 +61,8 @@ Recent decisions affecting current work:
 - [Phase 01-spacetimedb-foundation-and-access-control]: Regenerate bindings into src/lib/spacetimedb/module_bindings rather than hand-editing generated client code.
 - [Phase 01-spacetimedb-foundation-and-access-control]: Keep reducer auth provider-agnostic while starting from a SpacetimeAuth-compatible issuer and audience model.
 - [Phase 01-spacetimedb-foundation-and-access-control]: Expose SpacetimeDB work through root npm scripts so later phases share one stable command surface.
+- [Phase 01-spacetimedb-foundation-and-access-control]: Keep module.ts as a composition-only entrypoint for schema, reducers, and read models. — This keeps the Phase 1 contract stable while later plans evolve implementation details without reopening entrypoint shape decisions.
+- [Phase 01-spacetimedb-foundation-and-access-control]: Select the public status payload from published announcements with an explicit normal fallback. — Public consumers should not infer normal operation from missing rows, and the read model must stay safe even before richer seed data lands.
 
 ### Pending Todos
 
@@ -73,6 +76,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T13:12:11.181Z
-Stopped at: Completed 01-spacetimedb-foundation-and-access-control-01-PLAN.md
+Last session: 2026-03-23T13:24:25.503Z
+Stopped at: Completed 01-spacetimedb-foundation-and-access-control-02-PLAN.md
 Resume file: None
