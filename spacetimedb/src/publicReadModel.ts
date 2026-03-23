@@ -11,12 +11,16 @@ export interface PublicBranchVisibility {
 }
 
 export interface PublicCurrentStatusPayload {
+  announcementId: string;
   statusKind: StatusKind;
   title: string;
   message: string;
   bannerText: string;
   startsAt: string | null;
   endsAt: string | null;
+  isFallbackNormal: boolean;
+  openBranchCount: number;
+  closedBranchCount: number;
   branches: PublicBranchVisibility[];
 }
 
@@ -80,6 +84,10 @@ function resolveBranchStatusKind(
   return "closed";
 }
 
+function isFallbackNormalAnnouncement(announcement: AnnouncementRecord): boolean {
+  return announcement.announcementId === seedNormalOperation.announcementId;
+}
+
 export const publicCurrentStatus: PublicReadModelContract<
   "publicCurrentStatus",
   PublicCurrentStatusPayload
@@ -88,36 +96,48 @@ export const publicCurrentStatus: PublicReadModelContract<
   description: "Public-safe current status projection without unpublished drafts or internal reducer metadata.",
   project: (state, now = new Date()) => {
     const announcement = selectAnnouncement(state, now);
+    const isFallbackNormal = isFallbackNormalAnnouncement(announcement);
     const targetedBranchIds = new Set(
       state.announcementBranchTargets
         .filter((target) => target.announcementId === announcement.announcementId)
         .map((target) => target.branchId),
     );
     const hasTargets = targetedBranchIds.size > 0;
+    const message = isFallbackNormal
+      ? "Semua gerai buka normal sesuai jam operasional reguler."
+      : announcement.message;
+    const bannerText = isFallbackNormal ? message : `${announcement.title}: ${message}`;
+    const branches = [...state.branches]
+      .filter((branch) => branch.isActive)
+      .sort((left, right) => left.sortOrder - right.sortOrder || left.name.localeCompare(right.name))
+      .map((branch) => {
+        const isTargeted = targetedBranchIds.has(branch.branchId);
+        const statusKind = resolveBranchStatusKind(announcement, isTargeted, hasTargets);
+
+        return {
+          branchId: branch.branchId,
+          slug: branch.slug,
+          name: branch.name,
+          statusKind,
+          isOpen: statusKind !== "closed",
+          isTargeted,
+        };
+      });
+    const openBranchCount = branches.filter((branch) => branch.isOpen).length;
+    const closedBranchCount = branches.length - openBranchCount;
 
     return {
+      announcementId: announcement.announcementId,
       statusKind: announcement.statusKind,
       title: announcement.title,
-      message: announcement.message,
-      bannerText: `${announcement.title}: ${announcement.message}`,
+      message,
+      bannerText,
       startsAt: announcement.startsAt,
       endsAt: announcement.endsAt,
-      branches: [...state.branches]
-        .filter((branch) => branch.isActive)
-        .sort((left, right) => left.sortOrder - right.sortOrder || left.name.localeCompare(right.name))
-        .map((branch) => {
-          const isTargeted = targetedBranchIds.has(branch.branchId);
-          const statusKind = resolveBranchStatusKind(announcement, isTargeted, hasTargets);
-
-          return {
-            branchId: branch.branchId,
-            slug: branch.slug,
-            name: branch.name,
-            statusKind,
-            isOpen: statusKind !== "closed",
-            isTargeted,
-          };
-        }),
+      isFallbackNormal,
+      openBranchCount,
+      closedBranchCount,
+      branches,
     };
   },
 };
