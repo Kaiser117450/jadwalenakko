@@ -16,7 +16,7 @@
 
 ### Admin Operations
 
-- [ ] **ADMN-01**: Admin can authenticate before accessing operational management features
+- [x] **ADMN-01**: Admin can authenticate before accessing operational management features
 - [ ] **ADMN-02**: Admin can create, edit, activate, and deactivate branch records without editing source code
 - [ ] **ADMN-03**: Admin can create, edit, publish, unpublish, and schedule operational announcements
 - [ ] **ADMN-04**: Admin can target an announcement to all branches or to selected branches only
@@ -24,8 +24,8 @@
 
 ### Data And Access
 
-- [ ] **DATA-01**: System stores branch master data and operational schedule data in SpacetimeDB instead of hard-coded arrays
-- [ ] **DATA-02**: Only authorized admins can mutate operational data, while public visitors can read only the safe public status model
+- [x] **DATA-01**: System stores branch master data and operational schedule data in SpacetimeDB instead of hard-coded arrays
+- [x] **DATA-02**: Only authorized admins can mutate operational data, while public visitors can read only the safe public status model
 - [ ] **DATA-03**: Public website reads from a stable public read model so the UI does not rebuild business rules from raw admin tables
 
 ## v2 Requirements
@@ -56,9 +56,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | Phase 1 | Pending |
-| DATA-02 | Phase 1 | Pending |
-| ADMN-01 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Complete |
+| DATA-02 | Phase 1 | Complete |
+| ADMN-01 | Phase 1 | Complete |
 | DATA-03 | Phase 2 | Pending |
 | PUB-01 | Phase 2 | Pending |
 | PUB-03 | Phase 2 | Pending |
