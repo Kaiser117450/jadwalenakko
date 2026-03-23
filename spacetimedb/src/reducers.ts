@@ -1,10 +1,12 @@
+import type { ReducerAuthContext } from "./auth";
+import { assertAdminClaims } from "./auth";
 import type { AnnouncementRecord, BranchRecord, OperationalState, StatusKind } from "./schema";
 import { statusKinds } from "./schema";
 
 export interface ReducerContract<TName extends string, TInput> {
   name: TName;
   description: string;
-  apply: (state: OperationalState, input: TInput) => OperationalState;
+  apply: (state: OperationalState, input: TInput, authContext: ReducerAuthContext) => OperationalState;
 }
 
 export interface CreateBranchInput {
@@ -100,10 +102,25 @@ function dedupeBranchIds(branchIds: string[]): string[] {
   return [...new Set(branchIds)];
 }
 
-export const createBranch: ReducerContract<"createBranch", CreateBranchInput> = {
-  name: "createBranch",
-  description: "Create a normalized branch master record.",
-  apply: (state, input) => {
+function createAdminReducer<TName extends string, TInput>(
+  name: TName,
+  description: string,
+  applyMutation: (state: OperationalState, input: TInput) => OperationalState,
+): ReducerContract<TName, TInput> {
+  return {
+    name,
+    description,
+    apply: (state, input, authContext) => {
+      assertAdminClaims(authContext);
+      return applyMutation(state, input);
+    },
+  };
+}
+
+export const createBranch = createAdminReducer(
+  "createBranch",
+  "Create a normalized branch master record.",
+  (state, input) => {
     if (state.branches.some((branch) => branch.branchId === input.branchId)) {
       throw new Error(`Branch '${input.branchId}' already exists.`);
     }
@@ -125,12 +142,12 @@ export const createBranch: ReducerContract<"createBranch", CreateBranchInput> = 
       ]),
     };
   },
-};
+);
 
-export const updateBranch: ReducerContract<"updateBranch", UpdateBranchInput> = {
-  name: "updateBranch",
-  description: "Update branch lifecycle fields without bypassing reducer validation.",
-  apply: (state, input) => {
+export const updateBranch = createAdminReducer(
+  "updateBranch",
+  "Update branch lifecycle fields without bypassing reducer validation.",
+  (state, input) => {
     const current = assertBranchExists(state, input.branchId);
     const nextSlug = input.slug ?? current.slug;
     const nextSortOrder = input.sortOrder ?? current.sortOrder;
@@ -154,12 +171,12 @@ export const updateBranch: ReducerContract<"updateBranch", UpdateBranchInput> = 
       ),
     };
   },
-};
+);
 
-export const deactivateBranch: ReducerContract<"deactivateBranch", DeactivateBranchInput> = {
-  name: "deactivateBranch",
-  description: "Deactivate a branch without deleting historical announcement targeting data.",
-  apply: (state, input) => {
+export const deactivateBranch = createAdminReducer(
+  "deactivateBranch",
+  "Deactivate a branch without deleting historical announcement targeting data.",
+  (state, input) => {
     assertBranchExists(state, input.branchId);
 
     return {
@@ -169,12 +186,12 @@ export const deactivateBranch: ReducerContract<"deactivateBranch", DeactivateBra
       ),
     };
   },
-};
+);
 
-export const upsertAnnouncement: ReducerContract<"upsertAnnouncement", UpsertAnnouncementInput> = {
-  name: "upsertAnnouncement",
-  description: "Create or update an announcement record with explicit operational state.",
-  apply: (state, input) => {
+export const upsertAnnouncement = createAdminReducer(
+  "upsertAnnouncement",
+  "Create or update an announcement record with explicit operational state.",
+  (state, input) => {
     assertKnownStatusKind(input.statusKind);
     assertValidEffectiveWindow(input.startsAt, input.endsAt);
 
@@ -204,15 +221,12 @@ export const upsertAnnouncement: ReducerContract<"upsertAnnouncement", UpsertAnn
       ),
     };
   },
-};
+);
 
-export const setAnnouncementBranchTargets: ReducerContract<
+export const setAnnouncementBranchTargets = createAdminReducer(
   "setAnnouncementBranchTargets",
-  SetAnnouncementBranchTargetsInput
-> = {
-  name: "setAnnouncementBranchTargets",
-  description: "Replace branch-target join rows for a given announcement.",
-  apply: (state, input) => {
+  "Replace branch-target join rows for a given announcement.",
+  (state, input) => {
     assertAnnouncementExists(state, input.announcementId);
 
     const branchIds = dedupeBranchIds(input.branchIds);
@@ -234,7 +248,7 @@ export const setAnnouncementBranchTargets: ReducerContract<
       ],
     };
   },
-};
+);
 
 export const reducers = {
   createBranch,
