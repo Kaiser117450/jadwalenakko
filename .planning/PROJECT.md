@@ -18,13 +18,13 @@ Status operasional yang tampil ke publik harus selalu cepat dibaca dan mudah dip
 - ✓ Branch master data dan baseline status operasional sekarang sudah dimodelkan di fondasi SpacetimeDB repo ini — validated in Phase 1
 - ✓ Akses ubah data operasional sekarang dibatasi di level reducer admin-only dengan validasi claim terpusat — validated in Phase 1
 - ✓ Jalur baca publik sudah dipersempit ke kontrak read model yang aman untuk integrasi frontend berikutnya — validated in Phase 1
+- ✓ Website publik sekarang menampilkan status operasional realtime dari SpacetimeDB tanpa redeploy — validated in Phase 2
+- ✓ Sistem sekarang tetap menampilkan keadaan normal dengan jelas saat tidak ada libur atau event khusus — validated in Phase 2
 
 ### Active
 
 - [ ] Admin dapat mengelola master gerai dan status operasionalnya dari database
-- [ ] Website publik menampilkan status operasional realtime dari SpacetimeDB tanpa redeploy
 - [ ] Admin dapat membuat pengumuman umum maupun pengumuman khusus per periode atau per gerai
-- [ ] Sistem tetap menampilkan keadaan normal dengan jelas saat tidak ada libur atau event khusus
 - [ ] Pengalaman baca status tetap cepat dan jelas di mobile maupun desktop
 
 ### Out of Scope
@@ -35,7 +35,7 @@ Status operasional yang tampil ke publik harus selalu cepat dibaca dan mudah dip
 
 ## Context
 
-Codebase saat ini adalah microsite Astro satu halaman dengan seluruh data jadwal masih hard-coded di `src/pages/index.astro`. Mapping brownfield menunjukkan bahwa UI, data, dan logika tanggal masih menyatu dalam satu file, belum ada backend, belum ada test suite, dan belum ada jalur admin untuk update data.
+Codebase ini bermula sebagai microsite Astro satu halaman dengan seluruh data jadwal hard-coded di `src/pages/index.astro`. Brownfield migration sekarang sudah memindahkan jalur baca publik ke SpacetimeDB realtime, tetapi surface admin, scheduling rules, dan hardening lintas-device masih menjadi pekerjaan fase berikutnya.
 
 Secara produk, kebutuhan utamanya bergeser dari "halaman event musiman" menjadi "website pemberitahuan jadwal realtime" yang tetap berguna pada hari normal. Hari tanpa event adalah kondisi paling sering, jadi model datanya tidak boleh menganggap ketiadaan pengumuman sebagai keadaan error; sistem harus punya status normal sebagai state yang sah.
 
@@ -47,9 +47,9 @@ Pengguna utama ada dua:
 
 ## Current State
 
-Phase 1 selesai pada 2026-03-23. Repo sekarang punya fondasi SpacetimeDB yang konkret: workspace `spacetimedb/`, schema ter-normalisasi untuk branch dan announcement, reducer write surface yang dijaga auth admin, seed baseline 12 gerai Enakko plus status normal eksplisit, dan `publicCurrentStatus` sebagai kontrak baca publik.
+Phase 2 selesai pada 2026-03-23. Repo sekarang punya fondasi SpacetimeDB yang konkret dari Phase 1 plus homepage publik yang sudah membaca `publicCurrentStatus` secara live melalui `src/lib/spacetimedb/public-status-client.ts` dan `src/lib/public-status/view-model.ts`.
 
-Website Astro publik belum dipindahkan ke data live; `src/pages/index.astro` masih memegang array hard-coded sebagai legacy brownfield sampai Phase 2 memigrasikan rendering ke read model realtime.
+`src/pages/index.astro` tidak lagi menyimpan array jadwal hard-coded sebagai source of truth. Halaman publik sekarang merender state loading, normal, special, dan unavailable dari kontrak read model yang dipublish, dan aturan mapping intinya sudah dicakup oleh `tests/public-status-view-model.test.mjs`.
 
 ## Constraints
 
@@ -67,6 +67,8 @@ Website Astro publik belum dipindahkan ke data live; `src/pages/index.astro` mas
 | Pertahankan website publik yang sudah ada lalu migrasikan datanya ke model realtime | Lebih cepat daripada membangun ulang dari nol, dan UI publik dasar sudah terbukti bekerja | Phase 1 validated the brownfield path by keeping the Astro page intact while moving new source-of-truth contracts into SpacetimeDB |
 | Status normal dijadikan state data eksplisit, bukan sekadar "tidak ada pengumuman" | Kondisi normal adalah kasus utama dan harus tampil konsisten walau tidak ada event khusus | Validated in Phase 1 through the explicit `normal` status kind and seeded normal baseline |
 | Pisahkan jalur baca publik dan jalur ubah admin di level data model | Dokumentasi SpacetimeDB menunjukkan baca publik dan mutasi via reducer adalah pola yang tepat untuk app realtime | Validated in Phase 1 through guarded reducers and the `publicCurrentStatus` read model |
+| Gunakan prepared public-status view model di antara kontrak realtime dan render Astro | Halaman publik perlu menerima data yang sudah siap tampil, supaya `index.astro` tidak kembali menjadi tempat business rules operasional | Validated in Phase 2 through `src/lib/public-status/view-model.ts` and the live homepage migration |
+| Gunakan presentation state eksplisit untuk board publik (`loading`, `ready-normal`, `ready-special`, `unavailable`) | Keadaan normal dan unavailable harus sama jelasnya dengan event khusus, dan perlu satu kontrak yang juga bisa dites | Validated in Phase 2 through the shared view-model contract and lightweight `node:test` coverage |
 | Admin panel dibuat web-first di repo yang sama | Kebutuhan utama adalah kecepatan operasi dan konsistensi data, bukan ekspansi kanal | — Pending |
 | Gunakan autentikasi admin yang kompatibel dengan identitas/claim SpacetimeDB | Reducer context dan auth claims SpacetimeDB memberi fondasi untuk pembatasan akses admin | Validated in Phase 1 through issuer, audience, and admin-allowlist claim checks at reducer boundaries |
 
@@ -88,4 +90,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after Phase 1 completion*
+*Last updated: 2026-03-24 after Phase 2 completion*

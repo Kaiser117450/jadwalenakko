@@ -7,10 +7,10 @@
 
 ### Public Status
 
-- [ ] **PUB-01**: Visitor can open the public homepage and immediately see the current overall operational status
+- [x] **PUB-01**: Visitor can open the public homepage and immediately see the current overall operational status
 - [ ] **PUB-02**: Visitor can see which branches are open, limited, or closed for the currently active status period
-- [ ] **PUB-03**: Visitor can still see a clear "normal operation" message when no special announcement is active
-- [ ] **PUB-04**: Visitor sees public status updates from database-backed realtime data without waiting for a code redeploy
+- [x] **PUB-03**: Visitor can still see a clear "normal operation" message when no special announcement is active
+- [x] **PUB-04**: Visitor sees public status updates from database-backed realtime data without waiting for a code redeploy
 - [ ] **PUB-05**: Visitor sees status that follows a defined effective period and canonical operational timezone
 - [ ] **PUB-06**: Visitor can read the current operational status clearly on both mobile and desktop layouts
 
@@ -26,7 +26,7 @@
 
 - [x] **DATA-01**: System stores branch master data and operational schedule data in SpacetimeDB instead of hard-coded arrays
 - [x] **DATA-02**: Only authorized admins can mutate operational data, while public visitors can read only the safe public status model
-- [ ] **DATA-03**: Public website reads from a stable public read model so the UI does not rebuild business rules from raw admin tables
+- [x] **DATA-03**: Public website reads from a stable public read model so the UI does not rebuild business rules from raw admin tables
 
 ## v2 Requirements
 
@@ -59,10 +59,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Complete |
 | ADMN-01 | Phase 1 | Complete |
-| DATA-03 | Phase 2 | Pending |
-| PUB-01 | Phase 2 | Pending |
-| PUB-03 | Phase 2 | Pending |
-| PUB-04 | Phase 2 | Pending |
+| DATA-03 | Phase 2 | Complete |
+| PUB-01 | Phase 2 | Complete |
+| PUB-03 | Phase 2 | Complete |
+| PUB-04 | Phase 2 | Complete |
 | ADMN-02 | Phase 3 | Pending |
 | ADMN-04 | Phase 3 | Pending |
 | PUB-02 | Phase 3 | Pending |
@@ -78,4 +78,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-23*
-*Last updated: 2026-03-23 after roadmap creation*
+*Last updated: 2026-03-24 after Phase 2 completion*
