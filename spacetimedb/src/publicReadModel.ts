@@ -1,5 +1,5 @@
-import type { AnnouncementRecord, OperationalState, StatusKind } from "./schema";
-import { seedNormalOperation } from "./schema";
+import type { AnnouncementRecord, OperationalState, StatusKind } from "./schema.ts";
+import { seedNormalOperation } from "./schema.ts";
 
 export interface PublicBranchVisibility {
   branchId: string;
