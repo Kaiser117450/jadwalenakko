@@ -1,4 +1,4 @@
-import { statusKinds, type StatusKind } from "../../../spacetimedb/src/schema";
+import { statusKinds, type StatusKind } from "../../../spacetimedb/src/schema.ts";
 
 type LiveStatusTargetMode = "all" | "selected";
 
