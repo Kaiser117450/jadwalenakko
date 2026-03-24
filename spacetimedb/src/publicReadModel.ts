@@ -73,8 +73,12 @@ function resolveBranchStatusKind(
   isTargeted: boolean,
   hasTargets: boolean,
 ): StatusKind {
-  if (announcement.statusKind === "normal" || announcement.statusKind === "closed") {
-    return announcement.statusKind;
+  if (announcement.statusKind === "normal") {
+    return "normal";
+  }
+
+  if (announcement.statusKind === "closed") {
+    return !hasTargets || isTargeted ? "closed" : "normal";
   }
 
   if (!hasTargets || isTargeted) {
