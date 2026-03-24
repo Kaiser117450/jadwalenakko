@@ -2,7 +2,8 @@ import {
   DbConnection,
   type SubscriptionHandle,
 } from "./module_bindings";
-import type { BranchRow } from "./module_bindings/types";
+import type { StatusKind as AppStatusKind } from "../../../spacetimedb/src/schema";
+import type { BranchRow, StatusKind as RuntimeStatusKind } from "./module_bindings/types";
 import type {
   CreateBranchParams,
   DeactivateBranchParams,
@@ -38,6 +39,25 @@ function sortBranchRows(branches: BranchRow[]): BranchRow[] {
   return [...branches].sort(
     (left, right) => left.sortOrder - right.sortOrder || left.name.localeCompare(right.name),
   );
+}
+
+function toRuntimeStatusKind(statusKind: AppStatusKind | RuntimeStatusKind): RuntimeStatusKind {
+  if (typeof statusKind === "object" && statusKind !== null && "tag" in statusKind) {
+    return statusKind;
+  }
+
+  switch (statusKind) {
+    case "normal":
+      return { tag: "Normal" };
+    case "limited":
+      return { tag: "Limited" };
+    case "halfday":
+      return { tag: "Halfday" };
+    case "closed":
+      return { tag: "Closed" };
+    default:
+      return { tag: "Normal" };
+  }
 }
 
 function readAdminBranchDirectory(connection: DbConnection | null = activeConnection): BranchRow[] {
@@ -188,10 +208,15 @@ export function deactivateBranchRecord(
 }
 
 export function upsertAnnouncementRecord(
-  input: UpsertAnnouncementParams,
+  input: Omit<UpsertAnnouncementParams, "statusKind"> & {
+    statusKind: AppStatusKind | RuntimeStatusKind;
+  },
   options: AdminBranchClientOptions = {},
 ) {
-  return createAdminBranchClient(options).reducers.upsertAnnouncement(input);
+  return createAdminBranchClient(options).reducers.upsertAnnouncement({
+    ...input,
+    statusKind: toRuntimeStatusKind(input.statusKind),
+  });
 }
 
 export function setAnnouncementTargetBranches(

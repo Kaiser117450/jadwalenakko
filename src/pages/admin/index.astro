@@ -1,7 +1,9 @@
 ---
 import { branchFormDefaults } from "../../lib/admin/branch-form";
+import { liveStatusFormDefaults } from "../../lib/admin/live-status-form";
 
 const initialBranchForm = branchFormDefaults;
+const initialLiveStatusForm = liveStatusFormDefaults;
 ---
 
 <html lang="id">
@@ -208,6 +210,106 @@ const initialBranchForm = branchFormDefaults;
           <section class="rounded-[1.9rem] border border-white/70 bg-white/72 p-6 shadow-[0_20px_60px_rgba(140,44,5,0.10)] backdrop-blur-md">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
+                <p class="text-xs font-black uppercase tracking-[0.3em] text-[#b34b1c]">Live Status Flow</p>
+                <h2 class="mt-2 text-2xl font-black text-[#7a1f00]">Simpan Perubahan Operasional Langsung</h2>
+              </div>
+              <p
+                id="admin-live-status-feedback"
+                class="rounded-full border border-[#c94100]/10 bg-[#fff7f1] px-3 py-1.5 text-xs font-semibold tracking-[0.08em] text-[#7d3213]"
+              >
+                Isi status live lalu pilih semua cabang atau subset cabang tertentu.
+              </p>
+            </div>
+
+            <form data-admin-live-status-form class="mt-6 grid gap-4 lg:grid-cols-2">
+              <label class="block lg:col-span-2">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Judul Status</span>
+                <input
+                  id="live-status-title"
+                  name="title"
+                  type="text"
+                  value={initialLiveStatusForm.title}
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                  placeholder="Operasional Terbatas Hari Ini"
+                />
+              </label>
+
+              <label class="block lg:col-span-2">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Pesan Publik</span>
+                <textarea
+                  id="live-status-message"
+                  name="message"
+                  rows="4"
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm leading-7 text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                  placeholder="Tuliskan perubahan operasional yang perlu dibaca pengunjung."
+                >{initialLiveStatusForm.message}</textarea>
+              </label>
+
+              <label class="block">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Status Kind</span>
+                <select
+                  id="live-status-kind"
+                  name="statusKind"
+                  data-admin-status-kind
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                >
+                  <option value="normal" selected={initialLiveStatusForm.statusKind === "normal"}>Normal</option>
+                  <option value="limited" selected={initialLiveStatusForm.statusKind === "limited"}>Limited</option>
+                  <option value="halfday" selected={initialLiveStatusForm.statusKind === "halfday"}>Halfday</option>
+                  <option value="closed" selected={initialLiveStatusForm.statusKind === "closed"}>Closed</option>
+                </select>
+              </label>
+
+              <label class="block">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Target Mode</span>
+                <select
+                  id="live-status-target-mode"
+                  name="targetMode"
+                  data-admin-target-mode
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                >
+                  <option value="all" selected={initialLiveStatusForm.targetMode === "all"}>Semua Cabang</option>
+                  <option value="selected" selected={initialLiveStatusForm.targetMode === "selected"}>Cabang Terpilih</option>
+                </select>
+              </label>
+
+              <div class="rounded-[1.3rem] border border-[#c94100]/10 bg-[#fffaf6] p-4 lg:col-span-2">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Cabang Tertarget</p>
+                    <p class="mt-2 text-sm leading-7 text-[#7d3213]">
+                      Mode <strong>all</strong> akan mengosongkan target cabang agar satu status berlaku
+                      untuk semua gerai aktif. Mode <strong>selected</strong> membatasi status hanya ke
+                      cabang yang dicentang.
+                    </p>
+                  </div>
+                  <span class="rounded-full border border-[#c94100]/10 bg-white px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-[#a34b1b]">
+                    admin-live-status
+                  </span>
+                </div>
+
+                <div data-admin-target-branches class="mt-4 grid gap-3 sm:grid-cols-2">
+                  <article class="rounded-[1rem] border border-dashed border-[#c94100]/18 bg-white px-4 py-3 text-sm leading-7 text-[#7d3213]">
+                    Hubungkan token admin untuk memuat cabang aktif yang bisa ditarget.
+                  </article>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-3 lg:col-span-2">
+                <button
+                  type="submit"
+                  data-admin-live-status-save
+                  class="inline-flex items-center justify-center rounded-full bg-[#7a1f00] px-5 py-3 text-xs font-black uppercase tracking-[0.24em] text-white transition hover:-translate-y-0.5 hover:bg-[#962800]"
+                >
+                  Simpan Status Live
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section class="rounded-[1.9rem] border border-white/70 bg-white/72 p-6 shadow-[0_20px_60px_rgba(140,44,5,0.10)] backdrop-blur-md">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
                 <p class="text-xs font-black uppercase tracking-[0.3em] text-[#b34b1c]">Branch Directory</p>
                 <h2 class="mt-2 text-2xl font-black text-[#7a1f00]">Daftar Cabang Real-Time</h2>
               </div>
@@ -235,14 +337,21 @@ const initialBranchForm = branchFormDefaults;
         createBranchRecord,
         deactivateBranchRecord,
         disconnectAdminBranchClient,
+        setAnnouncementTargetBranches,
         subscribeAdminBranchDirectory,
         updateBranchRecord,
+        upsertAnnouncementRecord,
       } from "../../lib/spacetimedb/admin-branch-client";
       import {
         branchFormDefaults,
         normalizeBranchInput,
         toActivationPatch,
       } from "../../lib/admin/branch-form";
+      import {
+        liveStatusFormDefaults,
+        normalizeLiveStatusInput,
+        resolveTargetBranchIds,
+      } from "../../lib/admin/live-status-form";
 
       const ADMIN_TOKEN_SESSION_KEY = "enakko-admin-token";
 
@@ -253,6 +362,13 @@ const initialBranchForm = branchFormDefaults;
       const branchForm = document.querySelector("[data-admin-branch-form]");
       const branchList = document.querySelector("[data-admin-branch-list]");
       const branchSaveButton = document.querySelector("[data-admin-branch-save]");
+      const liveStatusForm = document.querySelector("[data-admin-live-status-form]");
+      const liveStatusFeedback = document.getElementById("admin-live-status-feedback");
+      const liveStatusTitleInput = document.getElementById("live-status-title");
+      const liveStatusMessageInput = document.getElementById("live-status-message");
+      const liveStatusKindInput = document.querySelector("[data-admin-status-kind]");
+      const liveStatusTargetModeInput = document.querySelector("[data-admin-target-mode]");
+      const targetBranchesList = document.querySelector("[data-admin-target-branches]");
       const branchIdInput = document.getElementById("branch-id");
       const branchSlugInput = document.getElementById("branch-slug");
       const branchNameInput = document.getElementById("branch-name");
@@ -264,6 +380,7 @@ const initialBranchForm = branchFormDefaults;
         branches: [],
         activeBranchId: "",
         unsubscribe: null,
+        selectedTargetBranchIds: [],
       };
 
       const setConnectionStatus = (message) => {
@@ -278,6 +395,12 @@ const initialBranchForm = branchFormDefaults;
         }
       };
 
+      const setLiveStatusFeedback = (message) => {
+        if (liveStatusFeedback) {
+          liveStatusFeedback.textContent = message;
+        }
+      };
+
       const getStoredToken = () => {
         try {
           return window.sessionStorage.getItem(ADMIN_TOKEN_SESSION_KEY)?.trim() ?? "";
@@ -289,6 +412,105 @@ const initialBranchForm = branchFormDefaults;
       const getClientOptions = () => {
         const token = getStoredToken();
         return token ? { token } : {};
+      };
+
+      const getActiveBranches = () => state.branches.filter((branch) => branch.isActive);
+
+      const syncSelectedTargetBranchIds = () => {
+        const activeBranchIds = new Set(getActiveBranches().map((branch) => branch.branchId));
+        state.selectedTargetBranchIds = state.selectedTargetBranchIds.filter((branchId) =>
+          activeBranchIds.has(branchId),
+        );
+      };
+
+      const readSelectedTargetBranchIds = () => {
+        if (!targetBranchesList) {
+          return [];
+        }
+
+        return Array.from(
+          targetBranchesList.querySelectorAll('input[name="selectedBranchIds"]:checked'),
+        ).map((input) => input.value);
+      };
+
+      const applyLiveStatusForm = (payload = liveStatusFormDefaults) => {
+        if (liveStatusTitleInput) {
+          liveStatusTitleInput.value = payload.title ?? liveStatusFormDefaults.title;
+        }
+
+        if (liveStatusMessageInput) {
+          liveStatusMessageInput.value = payload.message ?? liveStatusFormDefaults.message;
+        }
+
+        if (liveStatusKindInput instanceof HTMLSelectElement) {
+          liveStatusKindInput.value = payload.statusKind ?? liveStatusFormDefaults.statusKind;
+        }
+
+        if (liveStatusTargetModeInput instanceof HTMLSelectElement) {
+          liveStatusTargetModeInput.value = payload.targetMode ?? liveStatusFormDefaults.targetMode;
+        }
+
+        state.selectedTargetBranchIds = [...(payload.selectedBranchIds ?? liveStatusFormDefaults.selectedBranchIds)];
+        renderTargetBranchOptions();
+      };
+
+      const renderTargetBranchOptions = () => {
+        if (!targetBranchesList) {
+          return;
+        }
+
+        syncSelectedTargetBranchIds();
+
+        const activeBranches = getActiveBranches();
+        const targetMode =
+          liveStatusTargetModeInput instanceof HTMLSelectElement
+            ? liveStatusTargetModeInput.value
+            : liveStatusFormDefaults.targetMode;
+        const isSelectedMode = targetMode === "selected";
+
+        targetBranchesList.replaceChildren();
+        targetBranchesList.classList.toggle("opacity-60", !isSelectedMode);
+
+        if (activeBranches.length === 0) {
+          const emptyState = document.createElement("article");
+          emptyState.className =
+            "rounded-[1rem] border border-dashed border-[#c94100]/18 bg-white px-4 py-3 text-sm leading-7 text-[#7d3213]";
+          emptyState.textContent = getStoredToken()
+            ? "Belum ada cabang aktif yang bisa ditarget. Aktifkan cabang terlebih dahulu."
+            : "Hubungkan token admin untuk memuat cabang aktif yang bisa ditarget.";
+          targetBranchesList.append(emptyState);
+          return;
+        }
+
+        activeBranches.forEach((branch) => {
+          const option = document.createElement("label");
+          option.className =
+            "flex items-start gap-3 rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f]";
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.name = "selectedBranchIds";
+          checkbox.value = branch.branchId;
+          checkbox.checked = state.selectedTargetBranchIds.includes(branch.branchId);
+          checkbox.disabled = !isSelectedMode;
+          checkbox.className =
+            "mt-1 h-4 w-4 rounded border-[#c94100]/25 text-[#c94100] focus:ring-[#c94100]/30";
+
+          const copy = document.createElement("span");
+          const branchName = document.createElement("strong");
+          branchName.className = "block text-sm font-black text-[#7a1f00]";
+          branchName.textContent = branch.name;
+
+          const branchMeta = document.createElement("span");
+          branchMeta.className =
+            "mt-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#b35a2a]";
+          branchMeta.textContent = branch.branchId;
+
+          copy.append(branchName, branchMeta);
+
+          option.append(checkbox, copy);
+          targetBranchesList.append(option);
+        });
       };
 
       const applyBranchForm = (payload = branchFormDefaults, mode = "create") => {
@@ -412,6 +634,7 @@ const initialBranchForm = branchFormDefaults;
         state.unsubscribe = subscribeAdminBranchDirectory((branches) => {
           state.branches = branches;
           renderBranchList();
+          renderTargetBranchOptions();
           setConnectionStatus(
             branches.length > 0
               ? `Token aktif. ${branches.length} cabang tersinkron dari adminBranchDirectory.`
@@ -495,11 +718,88 @@ const initialBranchForm = branchFormDefaults;
         }
       });
 
+      liveStatusForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const token = ensureToken();
+        if (!token) {
+          return;
+        }
+
+        const normalizedInput = normalizeLiveStatusInput({
+          title: liveStatusTitleInput instanceof HTMLInputElement ? liveStatusTitleInput.value : "",
+          message:
+            liveStatusMessageInput instanceof HTMLTextAreaElement ? liveStatusMessageInput.value : "",
+          statusKind:
+            liveStatusKindInput instanceof HTMLSelectElement ? liveStatusKindInput.value : undefined,
+          targetMode:
+            liveStatusTargetModeInput instanceof HTMLSelectElement
+              ? liveStatusTargetModeInput.value
+              : undefined,
+          selectedBranchIds: state.selectedTargetBranchIds,
+        });
+        const targetBranchIds = resolveTargetBranchIds(normalizedInput);
+
+        if (!normalizedInput.title || !normalizedInput.message) {
+          setLiveStatusFeedback("Judul dan pesan publik wajib diisi sebelum status live disimpan.");
+          return;
+        }
+
+        if (normalizedInput.targetMode === "selected" && targetBranchIds.length === 0) {
+          setLiveStatusFeedback("Pilih minimal satu cabang aktif saat memakai mode target selected.");
+          return;
+        }
+
+        try {
+          await upsertAnnouncementRecord(
+            {
+              announcementId: normalizedInput.announcementId,
+              title: normalizedInput.title,
+              message: normalizedInput.message,
+              statusKind: normalizedInput.statusKind,
+              startsAt: null,
+              endsAt: null,
+              isPublished: true,
+              priority: 100,
+            },
+            { token },
+          );
+          await setAnnouncementTargetBranches(
+            {
+              announcementId: normalizedInput.announcementId,
+              branchIds: targetBranchIds,
+            },
+            { token },
+          );
+
+          const scopeLabel =
+            normalizedInput.targetMode === "all"
+              ? "semua cabang aktif"
+              : `${targetBranchIds.length} cabang terpilih`;
+          setLiveStatusFeedback(
+            `Status ${normalizedInput.statusKind} tersimpan untuk ${scopeLabel} lewat admin-live-status.`,
+          );
+          applyLiveStatusForm(normalizedInput);
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : "Status live gagal disimpan ke reducer.";
+          setLiveStatusFeedback(message);
+        }
+      });
+
       branchFormResetButton?.addEventListener("click", () => {
         window.setTimeout(() => {
           applyBranchForm(branchFormDefaults, "create");
           setFormStatus("Form direset ke mode buat cabang baru.");
         }, 0);
+      });
+
+      liveStatusTargetModeInput?.addEventListener("change", () => {
+        renderTargetBranchOptions();
+      });
+
+      targetBranchesList?.addEventListener("change", () => {
+        state.selectedTargetBranchIds = readSelectedTargetBranchIds();
       });
 
       branchList?.addEventListener("click", async (event) => {
@@ -543,6 +843,7 @@ const initialBranchForm = branchFormDefaults;
 
       renderBranchList();
       applyBranchForm(branchFormDefaults, "create");
+      applyLiveStatusForm(liveStatusFormDefaults);
 
       const storedToken = getStoredToken();
       if (authTokenInput && storedToken) {
