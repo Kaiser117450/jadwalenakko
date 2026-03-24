@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: SpacetimeDB Foundation And Access Control** - Validate module path, model core tables, and lock down write access
 - [x] **Phase 2: Public Realtime Status Board** - Replace hard-coded public state with a live public read model (completed 2026-03-24)
-- [ ] **Phase 3: Branch Operations Management** - Manage branch data and branch-targeted status changes from admin flows
+- [x] **Phase 3: Branch Operations Management** - Manage branch data and branch-targeted status changes from admin flows (completed 2026-03-24)
 - [ ] **Phase 4: Announcement Scheduling And Status Rules** - Publish scheduled operational announcements with explicit status types and time rules
 - [ ] **Phase 5: Readability And Launch Hardening** - Make the public/admin experience trustworthy across devices and regression checks
 
@@ -62,11 +62,11 @@ Plans:
   1. Admin can create, edit, activate, and deactivate branch records without touching source code
   2. Admin can target operational changes to all branches or selected branches only
   3. Visitors can see which branches are open, limited, or closed for the active status period
-**Plans**: 2 plans
+**Plans**: 2/2 plans complete
 
 Plans:
 - [x] 03-01: Build branch management reducers and admin UI for branch lifecycle operations
-- [ ] 03-02: Connect branch-targeted announcements to the public rendering and branch-status presentation
+- [x] 03-02: Connect branch-targeted announcements to the public rendering and branch-status presentation
 
 ### Phase 4: Announcement Scheduling And Status Rules
 **Goal**: Let admin publish scheduled operational announcements with explicit status types and a canonical operational time policy.
@@ -108,6 +108,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. SpacetimeDB Foundation And Access Control | 3/3 | Complete | 01-01, 01-02, 01-03 |
 | 2. Public Realtime Status Board | 3/3 | Complete | 2026-03-24 |
-| 3. Branch Operations Management | 1/2 | In Progress | 03-01 |
+| 3. Branch Operations Management | 2/2 | Complete | 2026-03-24 |
 | 4. Announcement Scheduling And Status Rules | 0/3 | Not started | - |
 | 5. Readability And Launch Hardening | 0/2 | Not started | - |
