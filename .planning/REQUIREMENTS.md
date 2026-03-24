@@ -17,7 +17,7 @@
 ### Admin Operations
 
 - [x] **ADMN-01**: Admin can authenticate before accessing operational management features
-- [ ] **ADMN-02**: Admin can create, edit, activate, and deactivate branch records without editing source code
+- [x] **ADMN-02**: Admin can create, edit, activate, and deactivate branch records without editing source code
 - [ ] **ADMN-03**: Admin can create, edit, publish, unpublish, and schedule operational announcements
 - [ ] **ADMN-04**: Admin can target an announcement to all branches or to selected branches only
 - [ ] **ADMN-05**: Admin can set whether an announcement represents normal operation, limited operation, half-day operation, or full closure
@@ -63,7 +63,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PUB-01 | Phase 2 | Complete |
 | PUB-03 | Phase 2 | Complete |
 | PUB-04 | Phase 2 | Complete |
-| ADMN-02 | Phase 3 | Pending |
+| ADMN-02 | Phase 3 | Complete |
 | ADMN-04 | Phase 3 | Pending |
 | PUB-02 | Phase 3 | Pending |
 | ADMN-03 | Phase 4 | Pending |

@@ -65,7 +65,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: Build branch management reducers and admin UI for branch lifecycle operations
+- [x] 03-01: Build branch management reducers and admin UI for branch lifecycle operations
 - [ ] 03-02: Connect branch-targeted announcements to the public rendering and branch-status presentation
 
 ### Phase 4: Announcement Scheduling And Status Rules
@@ -108,6 +108,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. SpacetimeDB Foundation And Access Control | 3/3 | Complete | 01-01, 01-02, 01-03 |
 | 2. Public Realtime Status Board | 3/3 | Complete | 2026-03-24 |
-| 3. Branch Operations Management | 0/2 | Not started | - |
+| 3. Branch Operations Management | 1/2 | In Progress | 03-01 |
 | 4. Announcement Scheduling And Status Rules | 0/3 | Not started | - |
 | 5. Readability And Launch Hardening | 0/2 | Not started | - |

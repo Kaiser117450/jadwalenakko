@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Phase 02 complete and verified
-last_updated: "2026-03-24T06:38:08.875Z"
+status: Ready to execute
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-24T08:56:27.228Z"
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
+Phase: 03 (branch-operations-management) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Plan: Not started
 | Phase 02 P01 | 58 min | 2 tasks | 10 files |
 | Phase 02 P02 | 15 min | 2 tasks | 2 files |
 | Phase 02 P03 | 7 min | 3 tasks | 3 files |
+| Phase 03 P01 | 9min | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,9 @@ Recent decisions affecting current work:
 - [Phase 02-public-realtime-status-board]: Use spacetimedb/src/index.ts as the publishable runtime entrypoint while keeping module.ts as the repo-facing contract surface. — The current SpacetimeDB CLI needs a real module entrypoint, but later repo work still benefits from the stable contract exports in module.ts.
 - [Phase 02-public-realtime-status-board]: Resolve the SpacetimeDB CLI through repo-owned Node wrappers instead of relying on PATH. — Windows installs place spacetime.exe under LOCALAPPDATA by default, so repo scripts need deterministic CLI resolution to keep dev, publish, and generate flows repeatable.
 - [Phase 02-public-realtime-status-board]: Use explicit presentation states loading, ready-normal, ready-special, and unavailable for the public board. — Normal and unavailable conditions need first-class UX treatment, and the same state machine now drives both rendering and tests.
+- [Phase 03]: Publish Phase 3 reducers from spacetimedb/src/index.ts with explicit canonical names so generated client accessors stay stable.
+- [Phase 03]: Keep the first admin surface as a plain Astro route with a session-stored token and an app-owned SpacetimeDB wrapper.
+- [Phase 03]: Use updateBranch plus toActivationPatch for reactivation instead of inventing a separate activate reducer.
 
 ### Pending Todos
 
@@ -86,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T15:40:33Z
-Stopped at: Phase 02 complete and verified
+Last session: 2026-03-24T08:56:27.223Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
