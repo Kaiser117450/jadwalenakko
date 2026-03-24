@@ -157,22 +157,24 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
 
             <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
               <div class="rounded-[1.8rem] border border-white/70 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
-                <p data-public-total-count class="text-3xl font-black text-[#ff0000]">
-                  {initialViewModel.openBranchCount + initialViewModel.closedBranchCount}
+                <p data-public-normal-count class="text-3xl font-black text-[#ff0000]">
+                  {initialViewModel.normalBranchCount}
                 </p>
-                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Total Gerai</p>
+                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Normal</p>
               </div>
               <div class="rounded-[1.8rem] border border-white/70 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
-                <p data-public-open-count class="text-3xl font-black text-[#7a1200]">
-                  {initialViewModel.openBranchCount}
+                <p data-public-limited-count class="text-3xl font-black text-[#7a1200]">
+                  {initialViewModel.limitedBranchCount}
                 </p>
-                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Buka</p>
+                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">
+                  Terbatas / Halfday
+                </p>
               </div>
               <div class="rounded-[1.8rem] border border-white/70 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
                 <p data-public-closed-count class="text-3xl font-black text-[#7a1200]">
                   {initialViewModel.closedBranchCount}
                 </p>
-                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Tutup</p>
+                <p class="mt-1 text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Tutup</p>
               </div>
             </div>
           </div>
@@ -198,7 +200,7 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
                   Terbatas / Setengah Hari
                 </span>
                 <p class="mt-4 text-sm leading-7 text-[#8a2a08]">
-                  Gerai aktif dan gerai tutup ditampilkan terpisah agar keputusan operasional bisa dibaca dalam sekali lihat.
+                  Cabang normal, terbatas, dan tutup dipisah ke tiga grup agar perubahan operasional bisa dibaca dalam sekali lihat.
                 </p>
               </div>
               <div class="rounded-[1.5rem] border border-[#ff0000] bg-[linear-gradient(135deg,#ff0000_0%,#c60000_100%)] p-5 text-white">
@@ -225,23 +227,46 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
               </p>
             </div>
 
-            <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <div class="mt-6 grid gap-5 xl:grid-cols-3">
               <article class="rounded-[1.8rem] border border-[#ff0000]/10 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
                 <div class="flex items-center justify-between gap-3">
                   <div>
-                    <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Buka</p>
-                    <p data-public-open-summary class="mt-2 text-sm leading-7 text-[#8a2a08]">
-                      Menyiapkan daftar gerai aktif dari status live.
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Normal</p>
+                    <p data-public-normal-summary class="mt-2 text-sm leading-7 text-[#8a2a08]">
+                      Menyiapkan cabang yang berjalan normal dari status live.
                     </p>
                   </div>
                   <span
                     class="rounded-full bg-[#7a1200] px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-white"
                   >
-                    Live
+                    Stabil
                   </span>
                 </div>
-                <ul data-public-open-branches class="mt-5 flex flex-wrap gap-2.5">
+                <ul data-public-normal-branches class="mt-5 flex flex-wrap gap-2.5">
                   <li class="rounded-full border border-[#ff0000]/10 bg-[#fff7f1] px-3 py-1 text-xs font-bold text-[#7a1200]">
+                    Memuat status operasional...
+                  </li>
+                </ul>
+              </article>
+
+              <article class="rounded-[1.8rem] border border-[#ff0000]/10 bg-white/80 p-5 shadow-[0_18px_50px_rgba(173,62,0,0.08)]">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">
+                      Gerai Terbatas / Halfday
+                    </p>
+                    <p data-public-limited-summary class="mt-2 text-sm leading-7 text-[#8a2a08]">
+                      Panel ini akan menunjukkan cabang dengan jam terbatas atau setengah hari.
+                    </p>
+                  </div>
+                  <span
+                    class="rounded-full bg-[#ffc300] px-3 py-1 text-[11px] font-black uppercase tracking-[0.22em] text-[#7a1200]"
+                  >
+                    Terbatas
+                  </span>
+                </div>
+                <ul data-public-limited-branches class="mt-5 flex flex-wrap gap-2.5">
+                  <li class="rounded-full border border-[#ffc300]/40 bg-[#fff5dc] px-3 py-1 text-xs font-bold text-[#7a1200]">
                     Memuat status operasional...
                   </li>
                 </ul>
@@ -252,7 +277,7 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
                   <div>
                     <p class="text-xs font-black uppercase tracking-[0.24em] text-[#a12e00]">Gerai Tutup</p>
                     <p data-public-closed-summary class="mt-2 text-sm leading-7 text-[#8a2a08]">
-                      Panel ini akan menunjukkan gerai yang sedang tidak aktif.
+                      Panel ini akan menunjukkan cabang yang sedang tidak aktif.
                     </p>
                   </div>
                   <span
@@ -284,12 +309,14 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
       const statusBanner = document.querySelector("[data-public-status-banner]");
       const fallbackChip = document.querySelector("[data-public-fallback-chip]");
       const connectionNote = document.querySelector("[data-public-connection-note]");
-      const openCount = document.querySelector("[data-public-open-count]");
+      const normalCount = document.querySelector("[data-public-normal-count]");
+      const limitedCount = document.querySelector("[data-public-limited-count]");
       const closedCount = document.querySelector("[data-public-closed-count]");
-      const totalCount = document.querySelector("[data-public-total-count]");
-      const openSummary = document.querySelector("[data-public-open-summary]");
+      const normalSummary = document.querySelector("[data-public-normal-summary]");
+      const limitedSummary = document.querySelector("[data-public-limited-summary]");
       const closedSummary = document.querySelector("[data-public-closed-summary]");
-      const openBranchesList = document.querySelector("[data-public-open-branches]");
+      const normalBranchesList = document.querySelector("[data-public-normal-branches]");
+      const limitedBranchesList = document.querySelector("[data-public-limited-branches]");
       const closedBranchesList = document.querySelector("[data-public-closed-branches]");
 
       const connectionNotes = {
@@ -309,8 +336,10 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
         if (branches.length === 0) {
           const emptyItem = document.createElement("li");
           emptyItem.className =
-            accent === "open"
+            accent === "normal"
               ? "rounded-full border border-[#ff0000]/10 bg-[#fff7f1] px-3 py-1 text-xs font-bold text-[#7a1200]"
+              : accent === "limited"
+                ? "rounded-full border border-[#ffc300]/40 bg-[#fff5dc] px-3 py-1 text-xs font-bold text-[#7a1200]"
               : "rounded-full border border-[#7a1200]/10 bg-white px-3 py-1 text-xs font-bold text-[#8a2a08]";
           emptyItem.textContent = emptyText;
           element.append(emptyItem);
@@ -320,23 +349,35 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
         branches.forEach((branch) => {
           const item = document.createElement("li");
           item.className =
-            accent === "open"
+            accent === "normal"
               ? "rounded-full border border-[#ff0000]/10 bg-[#fff7f1] px-3 py-1 text-xs font-bold text-[#7a1200]"
+              : accent === "limited"
+                ? "rounded-full border border-[#ffc300]/40 bg-[#fff5dc] px-3 py-1 text-xs font-bold text-[#7a1200]"
               : "rounded-full border border-[#7a1200]/10 bg-white px-3 py-1 text-xs font-bold text-[#8a2a08]";
 
-          item.textContent = branch.name;
+          const branchTags = [];
+
+          if (branch.statusKind === "limited") {
+            branchTags.push("terbatas");
+          }
+
+          if (branch.statusKind === "halfday") {
+            branchTags.push("setengah hari");
+          }
 
           if (branch.isTargeted) {
-            item.textContent = `${branch.name} · target`;
+            branchTags.push("target");
           }
+
+          item.textContent = branchTags.length > 0 ? `${branch.name} · ${branchTags.join(" · ")}` : branch.name;
 
           element.append(item);
         });
       };
 
-      const getOpenSummary = (model) => {
+      const getNormalSummary = (model) => {
         if (model.presentationState === "loading") {
-          return "Memuat daftar gerai aktif dari status realtime.";
+          return "Memuat daftar cabang normal dari status realtime.";
         }
 
         if (model.presentationState === "unavailable") {
@@ -347,7 +388,29 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
           return "Semua cabang aktif mengikuti operasional reguler.";
         }
 
-        return `${model.openBranchCount} gerai aktif untuk status yang sedang berjalan.`;
+        if (model.normalBranchCount === 0) {
+          return "Tidak ada cabang yang berjalan normal pada status aktif ini.";
+        }
+
+        return `${model.normalBranchCount} cabang tetap berjalan normal pada status aktif ini.`;
+      };
+
+      const getLimitedSummary = (model) => {
+        if (model.presentationState === "loading") {
+          return "Memuat cabang dengan jam terbatas atau setengah hari.";
+        }
+
+        if (model.presentationState === "unavailable") {
+          return "Status operasional belum tersedia.";
+        }
+
+        if (model.limitedBranchCount === 0) {
+          return model.isNormalFallback
+            ? "Tidak ada cabang dengan jam terbatas pada kondisi normal."
+            : "Tidak ada cabang dengan jam terbatas atau setengah hari pada status aktif ini.";
+        }
+
+        return `${model.limitedBranchCount} cabang sedang terbatas atau setengah hari.`;
       };
 
       const getClosedSummary = (model) => {
@@ -378,20 +441,24 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
         statusBanner.textContent = model.banner;
         connectionNote.textContent = connectionNotes[model.presentationState];
 
-        if (openCount) {
-          openCount.textContent = String(model.openBranchCount);
+        if (normalCount) {
+          normalCount.textContent = String(model.normalBranchCount);
+        }
+
+        if (limitedCount) {
+          limitedCount.textContent = String(model.limitedBranchCount);
         }
 
         if (closedCount) {
           closedCount.textContent = String(model.closedBranchCount);
         }
 
-        if (totalCount) {
-          totalCount.textContent = String(model.openBranchCount + model.closedBranchCount);
+        if (normalSummary) {
+          normalSummary.textContent = getNormalSummary(model);
         }
 
-        if (openSummary) {
-          openSummary.textContent = getOpenSummary(model);
+        if (limitedSummary) {
+          limitedSummary.textContent = getLimitedSummary(model);
         }
 
         if (closedSummary) {
@@ -406,12 +473,21 @@ const initialViewModel = buildPublicStatusViewModel(null, "loading");
         }
 
         renderBranchList(
-          openBranchesList,
-          model.openBranches,
+          normalBranchesList,
+          model.normalBranches,
           model.presentationState === "unavailable"
             ? "Status operasional belum tersedia."
             : "Memuat status operasional...",
-          "open",
+          "normal",
+        );
+
+        renderBranchList(
+          limitedBranchesList,
+          model.limitedBranches,
+          model.presentationState === "loading"
+            ? "Memuat status operasional..."
+            : "Tidak ada cabang terbatas atau halfday pada status saat ini.",
+          "limited",
         );
 
         renderBranchList(

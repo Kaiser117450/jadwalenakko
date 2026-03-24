@@ -18,10 +18,14 @@ export interface PublicStatusViewModel {
   statusLabel: string;
   statusTone: PublicStatusTone;
   presentationState: PublicStatusPresentationState;
-  openBranches: PublicBranchVisibility[];
+  normalBranches: PublicBranchVisibility[];
+  limitedBranches: PublicBranchVisibility[];
   closedBranches: PublicBranchVisibility[];
-  openBranchCount: number;
+  normalBranchCount: number;
+  limitedBranchCount: number;
   closedBranchCount: number;
+  openBranches: PublicBranchVisibility[];
+  openBranchCount: number;
   isNormalFallback: boolean;
 }
 
@@ -32,10 +36,19 @@ const STATUS_LABELS: Record<StatusKind, string> = {
   closed: "Tutup Total",
 };
 
-function splitBranches(branches: PublicBranchVisibility[]) {
+function groupBranches(branches: PublicBranchVisibility[]) {
+  const normalBranches = branches.filter((branch) => branch.statusKind === "normal");
+  const limitedBranches = branches.filter(
+    (branch) => branch.statusKind === "limited" || branch.statusKind === "halfday",
+  );
+  const closedBranches = branches.filter((branch) => branch.statusKind === "closed");
+  const openBranches = branches.filter((branch) => branch.statusKind !== "closed");
+
   return {
-    openBranches: branches.filter((branch) => branch.isOpen),
-    closedBranches: branches.filter((branch) => !branch.isOpen),
+    normalBranches,
+    limitedBranches,
+    closedBranches,
+    openBranches,
   };
 }
 
@@ -61,10 +74,14 @@ export function buildPublicStatusViewModel(
       statusLabel: "Menghubungkan data live",
       statusTone: "unavailable",
       presentationState: "loading",
-      openBranches: [],
+      normalBranches: [],
+      limitedBranches: [],
       closedBranches: [],
-      openBranchCount: 0,
+      normalBranchCount: 0,
+      limitedBranchCount: 0,
       closedBranchCount: 0,
+      openBranches: [],
+      openBranchCount: 0,
       isNormalFallback: false,
     };
   }
@@ -76,15 +93,19 @@ export function buildPublicStatusViewModel(
       statusLabel: "Koneksi tidak tersedia",
       statusTone: "unavailable",
       presentationState: "unavailable",
-      openBranches: [],
+      normalBranches: [],
+      limitedBranches: [],
       closedBranches: [],
-      openBranchCount: 0,
+      normalBranchCount: 0,
+      limitedBranchCount: 0,
       closedBranchCount: 0,
+      openBranches: [],
+      openBranchCount: 0,
       isNormalFallback: false,
     };
   }
 
-  const { openBranches, closedBranches } = splitBranches(payload.branches);
+  const { normalBranches, limitedBranches, closedBranches, openBranches } = groupBranches(payload.branches);
   const isNormalFallback = payload.isFallbackNormal || payload.statusKind === "normal";
   const presentationState: PublicStatusPresentationState = isNormalFallback
     ? "ready-normal"
@@ -98,10 +119,14 @@ export function buildPublicStatusViewModel(
     statusLabel: STATUS_LABELS[payload.statusKind],
     statusTone,
     presentationState,
-    openBranches,
+    normalBranches,
+    limitedBranches,
     closedBranches,
-    openBranchCount: payload.openBranchCount,
-    closedBranchCount: payload.closedBranchCount,
+    normalBranchCount: normalBranches.length,
+    limitedBranchCount: limitedBranches.length,
+    closedBranchCount: closedBranches.length,
+    openBranches,
+    openBranchCount: openBranches.length,
     isNormalFallback,
   };
 }
