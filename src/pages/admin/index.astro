@@ -1,0 +1,562 @@
+---
+import { branchFormDefaults } from "../../lib/admin/branch-form";
+
+const initialBranchForm = branchFormDefaults;
+---
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Cabang | Ayam Guling Enakko</title>
+    <meta
+      name="description"
+      content="Route admin untuk mengelola lifecycle cabang Ayam Guling Enakko lewat reducer SpacetimeDB."
+    />
+    <style is:global>
+      @import "tailwindcss";
+
+      :root {
+        --admin-bg: #fff2e6;
+        --admin-ink: #67210f;
+        --admin-accent: #c94100;
+        --admin-soft: #f5b58a;
+        --admin-panel: rgba(255, 255, 255, 0.82);
+        --admin-border: rgba(117, 33, 5, 0.12);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--admin-ink);
+        font-family: "Aptos", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(255, 195, 0, 0.34), transparent 26%),
+          radial-gradient(circle at top right, rgba(201, 65, 0, 0.16), transparent 22%),
+          linear-gradient(180deg, #fff8f2 0%, var(--admin-bg) 42%, #ffe0cd 100%);
+      }
+    </style>
+  </head>
+  <body class="antialiased selection:bg-[#c94100] selection:text-white">
+    <main class="mx-auto min-h-screen max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <section class="rounded-[2rem] border border-white/70 bg-white/55 p-6 shadow-[0_30px_90px_rgba(140,44,5,0.12)] backdrop-blur-md sm:p-8">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-3xl">
+            <p class="text-xs font-black uppercase tracking-[0.34em] text-[#b34b1c]">Admin Branch Ops</p>
+            <h1 class="mt-3 text-4xl font-black leading-tight text-[#7a1f00] sm:text-5xl">
+              Kelola Lifecycle Cabang Enakko
+            </h1>
+            <p class="mt-4 text-sm leading-7 text-[#7d3213] sm:text-base">
+              Route ini memakai binding Phase 3 yang di-generate dari runtime SpacetimeDB. Admin bisa
+              menyimpan token, membuka daftar cabang live, lalu membuat, mengedit, mengaktifkan, atau
+              menonaktifkan cabang tanpa edit source.
+            </p>
+          </div>
+
+          <a
+            href="/"
+            class="inline-flex items-center justify-center rounded-full border border-[#c94100]/15 bg-white px-5 py-3 text-sm font-black uppercase tracking-[0.2em] text-[#7a1f00] transition hover:-translate-y-0.5 hover:border-[#c94100]/35 hover:text-[#c94100]"
+          >
+            Kembali ke Board Publik
+          </a>
+        </div>
+      </section>
+
+      <section class="mt-6 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+        <section class="rounded-[1.9rem] border border-white/70 bg-[linear-gradient(145deg,#7a1f00_0%,#571000_100%)] p-6 text-white shadow-[0_22px_80px_rgba(91,20,0,0.28)]">
+          <p class="text-xs font-black uppercase tracking-[0.3em] text-white/70">Auth Token</p>
+          <h2 class="mt-3 text-2xl font-black">Hubungkan Admin Ke Reducer</h2>
+          <p class="mt-3 text-sm leading-7 text-white/82">
+            Masukkan token admin yang sesuai dengan claim reducer. Token akan disimpan di session storage
+            dengan key <code>enakko-admin-token</code> supaya koneksi dan mutasi memakai konteks yang sama.
+          </p>
+
+          <div class="mt-6 rounded-[1.6rem] border border-white/12 bg-white/10 p-5">
+            <label class="block text-xs font-black uppercase tracking-[0.24em] text-white/72" for="admin-token">
+              Token Admin
+            </label>
+            <textarea
+              id="admin-token"
+              data-admin-auth-token
+              rows="5"
+              spellcheck="false"
+              class="mt-3 w-full rounded-[1.2rem] border border-white/12 bg-white/92 px-4 py-3 text-sm leading-6 text-[#601700] outline-none transition focus:border-[#ffc300] focus:ring-2 focus:ring-[#ffc300]/45"
+              placeholder="Tempel token JWT admin di sini"
+            ></textarea>
+
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                data-admin-auth-connect
+                class="inline-flex items-center justify-center rounded-full bg-[#ffc300] px-5 py-3 text-xs font-black uppercase tracking-[0.24em] text-[#6b1b00] transition hover:-translate-y-0.5 hover:bg-[#ffd451]"
+              >
+                Hubungkan Token
+              </button>
+              <span
+                id="admin-connection-status"
+                class="rounded-full border border-white/12 bg-white/10 px-3 py-1.5 text-xs font-semibold tracking-[0.08em] text-white/88"
+              >
+                Token belum tersimpan.
+              </span>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-[1.5rem] border border-white/12 bg-white/10 p-5">
+            <p class="text-xs font-black uppercase tracking-[0.26em] text-white/72">Panduan Cepat</p>
+            <ol class="mt-4 space-y-3 text-sm leading-7 text-white/86">
+              <li>1. Tempel token admin lalu klik tombol koneksi.</li>
+              <li>2. Pilih cabang yang ingin diedit atau isi form untuk membuat cabang baru.</li>
+              <li>3. Gunakan tombol activate atau deactivate di daftar untuk mengubah status lifecycle.</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="grid gap-6">
+          <section class="rounded-[1.9rem] border border-white/70 bg-white/70 p-6 shadow-[0_20px_60px_rgba(140,44,5,0.10)] backdrop-blur-md">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-xs font-black uppercase tracking-[0.3em] text-[#b34b1c]">Branch Form</p>
+                <h2 class="mt-2 text-2xl font-black text-[#7a1f00]">Buat Atau Edit Cabang</h2>
+              </div>
+              <p
+                id="admin-form-status"
+                class="rounded-full border border-[#c94100]/10 bg-[#fff7f1] px-3 py-1.5 text-xs font-semibold tracking-[0.08em] text-[#7d3213]"
+              >
+                Form siap. Hubungkan token sebelum menyimpan.
+              </p>
+            </div>
+
+            <form data-admin-branch-form class="mt-6 grid gap-4 lg:grid-cols-2">
+              <label class="block">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Branch ID</span>
+                <input
+                  id="branch-id"
+                  name="branchId"
+                  type="text"
+                  value={initialBranchForm.branchId}
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                  placeholder="panjer"
+                />
+              </label>
+
+              <label class="block">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Slug</span>
+                <input
+                  id="branch-slug"
+                  name="slug"
+                  type="text"
+                  value={initialBranchForm.slug}
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                  placeholder="panjer"
+                />
+              </label>
+
+              <label class="block lg:col-span-2">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Nama Cabang</span>
+                <input
+                  id="branch-name"
+                  name="name"
+                  type="text"
+                  value={initialBranchForm.name}
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                  placeholder="Panjer"
+                />
+              </label>
+
+              <label class="block">
+                <span class="text-xs font-black uppercase tracking-[0.24em] text-[#8f3a12]">Sort Order</span>
+                <input
+                  id="branch-sort-order"
+                  name="sortOrder"
+                  type="number"
+                  min="0"
+                  value={initialBranchForm.sortOrder}
+                  class="mt-2 w-full rounded-[1rem] border border-[#c94100]/10 bg-white px-4 py-3 text-sm text-[#67210f] outline-none transition focus:border-[#c94100]/30 focus:ring-2 focus:ring-[#c94100]/15"
+                />
+              </label>
+
+              <label class="flex items-center gap-3 rounded-[1rem] border border-[#c94100]/10 bg-[#fff7f1] px-4 py-3">
+                <input
+                  id="branch-is-active"
+                  name="isActive"
+                  type="checkbox"
+                  checked={initialBranchForm.isActive}
+                  class="h-4 w-4 rounded border-[#c94100]/25 text-[#c94100] focus:ring-[#c94100]/30"
+                />
+                <span class="text-sm font-semibold text-[#67210f]">Cabang aktif saat disimpan</span>
+              </label>
+
+              <div class="flex flex-wrap gap-3 lg:col-span-2">
+                <button
+                  type="submit"
+                  data-admin-branch-save
+                  class="inline-flex items-center justify-center rounded-full bg-[#c94100] px-5 py-3 text-xs font-black uppercase tracking-[0.24em] text-white transition hover:-translate-y-0.5 hover:bg-[#df5a12]"
+                >
+                  Simpan Cabang
+                </button>
+                <button
+                  type="reset"
+                  id="branch-form-reset"
+                  class="inline-flex items-center justify-center rounded-full border border-[#c94100]/15 bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.24em] text-[#7a1f00] transition hover:-translate-y-0.5 hover:border-[#c94100]/35"
+                >
+                  Reset Form
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section class="rounded-[1.9rem] border border-white/70 bg-white/72 p-6 shadow-[0_20px_60px_rgba(140,44,5,0.10)] backdrop-blur-md">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-xs font-black uppercase tracking-[0.3em] text-[#b34b1c]">Branch Directory</p>
+                <h2 class="mt-2 text-2xl font-black text-[#7a1f00]">Daftar Cabang Real-Time</h2>
+              </div>
+              <p class="max-w-sm text-sm leading-7 text-[#7d3213]">
+                Daftar ini berlangganan ke <code>adminBranchDirectory</code> dan akan memantulkan hasil reducer
+                create, update, activate, dan deactivate.
+              </p>
+            </div>
+
+            <div
+              data-admin-branch-list
+              class="mt-6 grid gap-4"
+            >
+              <article class="rounded-[1.4rem] border border-dashed border-[#c94100]/18 bg-[#fffaf6] p-5 text-sm leading-7 text-[#7d3213]">
+                Masukkan token admin untuk memuat daftar cabang.
+              </article>
+            </div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      import {
+        createBranchRecord,
+        deactivateBranchRecord,
+        disconnectAdminBranchClient,
+        subscribeAdminBranchDirectory,
+        updateBranchRecord,
+      } from "../../lib/spacetimedb/admin-branch-client";
+      import {
+        branchFormDefaults,
+        normalizeBranchInput,
+        toActivationPatch,
+      } from "../../lib/admin/branch-form";
+
+      const ADMIN_TOKEN_SESSION_KEY = "enakko-admin-token";
+
+      const authTokenInput = document.querySelector("[data-admin-auth-token]");
+      const connectButton = document.querySelector("[data-admin-auth-connect]");
+      const connectionStatus = document.getElementById("admin-connection-status");
+      const formStatus = document.getElementById("admin-form-status");
+      const branchForm = document.querySelector("[data-admin-branch-form]");
+      const branchList = document.querySelector("[data-admin-branch-list]");
+      const branchSaveButton = document.querySelector("[data-admin-branch-save]");
+      const branchIdInput = document.getElementById("branch-id");
+      const branchSlugInput = document.getElementById("branch-slug");
+      const branchNameInput = document.getElementById("branch-name");
+      const branchSortOrderInput = document.getElementById("branch-sort-order");
+      const branchIsActiveInput = document.getElementById("branch-is-active");
+      const branchFormResetButton = document.getElementById("branch-form-reset");
+
+      const state = {
+        branches: [],
+        activeBranchId: "",
+        unsubscribe: null,
+      };
+
+      const setConnectionStatus = (message) => {
+        if (connectionStatus) {
+          connectionStatus.textContent = message;
+        }
+      };
+
+      const setFormStatus = (message) => {
+        if (formStatus) {
+          formStatus.textContent = message;
+        }
+      };
+
+      const getStoredToken = () => {
+        try {
+          return window.sessionStorage.getItem(ADMIN_TOKEN_SESSION_KEY)?.trim() ?? "";
+        } catch {
+          return "";
+        }
+      };
+
+      const getClientOptions = () => {
+        const token = getStoredToken();
+        return token ? { token } : {};
+      };
+
+      const applyBranchForm = (payload = branchFormDefaults, mode = "create") => {
+        if (!branchIdInput || !branchSlugInput || !branchNameInput || !branchSortOrderInput || !branchIsActiveInput) {
+          return;
+        }
+
+        branchIdInput.value = payload.branchId ?? branchFormDefaults.branchId;
+        branchSlugInput.value = payload.slug ?? branchFormDefaults.slug;
+        branchNameInput.value = payload.name ?? branchFormDefaults.name;
+        branchSortOrderInput.value = String(payload.sortOrder ?? branchFormDefaults.sortOrder);
+        branchIsActiveInput.checked = payload.isActive ?? branchFormDefaults.isActive;
+        branchIdInput.readOnly = mode === "edit";
+        state.activeBranchId = mode === "edit" ? payload.branchId : "";
+
+        if (branchSaveButton) {
+          branchSaveButton.textContent = mode === "edit" ? "Perbarui Cabang" : "Simpan Cabang";
+        }
+      };
+
+      const renderBranchList = () => {
+        if (!branchList) {
+          return;
+        }
+
+        branchList.replaceChildren();
+
+        if (state.branches.length === 0) {
+          const emptyState = document.createElement("article");
+          emptyState.className =
+            "rounded-[1.4rem] border border-dashed border-[#c94100]/18 bg-[#fffaf6] p-5 text-sm leading-7 text-[#7d3213]";
+          emptyState.textContent = getStoredToken()
+            ? "Belum ada cabang yang bisa ditampilkan dari adminBranchDirectory."
+            : "Masukkan token admin untuk memuat daftar cabang.";
+          branchList.append(emptyState);
+          return;
+        }
+
+        state.branches.forEach((branch) => {
+          const card = document.createElement("article");
+          card.className =
+            "rounded-[1.5rem] border border-[#c94100]/10 bg-[#fffdfb] p-5 shadow-[0_16px_44px_rgba(140,44,5,0.07)]";
+
+          const isEditing = branch.branchId === state.activeBranchId;
+          card.innerHTML = `
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="text-xl font-black text-[#7a1f00]">${branch.name}</h3>
+                  <span class="rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] ${
+                    branch.isActive
+                      ? "bg-[#f0ffe8] text-[#2f6a00]"
+                      : "bg-[#fff0ef] text-[#9f2600]"
+                  }">
+                    ${branch.isActive ? "active" : "inactive"}
+                  </span>
+                  ${isEditing ? '<span class="rounded-full bg-[#fff5d6] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] text-[#7a5200]">editing</span>' : ""}
+                </div>
+                <p class="mt-2 text-sm leading-7 text-[#7d3213]">
+                  <span class="font-semibold">ID:</span> ${branch.branchId}
+                  <span class="mx-2 text-[#d4a287]">/</span>
+                  <span class="font-semibold">Slug:</span> ${branch.slug}
+                </p>
+                <p class="text-sm leading-7 text-[#7d3213]">
+                  <span class="font-semibold">Urutan tampil:</span> ${branch.sortOrder}
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  data-admin-branch-edit
+                  data-branch-id="${branch.branchId}"
+                  class="rounded-full border border-[#c94100]/15 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#7a1f00] transition hover:border-[#c94100]/35 hover:text-[#c94100]"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  data-admin-branch-activate
+                  data-branch-id="${branch.branchId}"
+                  class="rounded-full bg-[#1c8d2a] px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-white transition hover:-translate-y-0.5 hover:bg-[#27a136]"
+                >
+                  Activate
+                </button>
+                <button
+                  type="button"
+                  data-admin-branch-deactivate
+                  data-branch-id="${branch.branchId}"
+                  class="rounded-full bg-[#c94100] px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-white transition hover:-translate-y-0.5 hover:bg-[#df5a12]"
+                >
+                  Deactivate
+                </button>
+              </div>
+            </div>
+          `;
+
+          branchList.append(card);
+        });
+      };
+
+      const connectWithToken = (token) => {
+        if (!token) {
+          setConnectionStatus("Token kosong. Tempel token admin terlebih dahulu.");
+          setFormStatus("Token kosong. Form belum bisa dipakai.");
+          return;
+        }
+
+        try {
+          window.sessionStorage.setItem(ADMIN_TOKEN_SESSION_KEY, token);
+        } catch {
+          setConnectionStatus("Gagal menyimpan token ke session storage.");
+          return;
+        }
+
+        if (state.unsubscribe) {
+          state.unsubscribe();
+          state.unsubscribe = null;
+        }
+
+        state.unsubscribe = subscribeAdminBranchDirectory((branches) => {
+          state.branches = branches;
+          renderBranchList();
+          setConnectionStatus(
+            branches.length > 0
+              ? `Token aktif. ${branches.length} cabang tersinkron dari adminBranchDirectory.`
+              : "Token aktif. Belum ada cabang yang dikembalikan oleh adminBranchDirectory.",
+          );
+        }, { token });
+
+        setConnectionStatus("Token tersimpan. Menghubungkan ke adminBranchDirectory...");
+        setFormStatus("Koneksi admin aktif. Anda bisa membuat atau memperbarui cabang.");
+      };
+
+      const ensureToken = () => {
+        const token = getStoredToken();
+
+        if (!token) {
+          setConnectionStatus("Simpan token admin terlebih dahulu.");
+          setFormStatus("Mutasi diblokir karena token admin belum tersedia.");
+          return "";
+        }
+
+        return token;
+      };
+
+      const collectBranchFormPayload = () => {
+        if (!branchIdInput || !branchSlugInput || !branchNameInput || !branchSortOrderInput || !branchIsActiveInput) {
+          return null;
+        }
+
+        const payload = normalizeBranchInput({
+          branchId: branchIdInput.value,
+          slug: branchSlugInput.value,
+          name: branchNameInput.value,
+          sortOrder: branchSortOrderInput.value,
+          isActive: branchIsActiveInput.checked,
+        });
+
+        if (!payload.branchId || !payload.slug || !payload.name) {
+          setFormStatus("Branch ID, slug, dan nama wajib diisi.");
+          return null;
+        }
+
+        return payload;
+      };
+
+      connectButton?.addEventListener("click", () => {
+        if (!authTokenInput) {
+          return;
+        }
+
+        connectWithToken(authTokenInput.value.trim());
+      });
+
+      branchForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const token = ensureToken();
+        if (!token) {
+          return;
+        }
+
+        const payload = collectBranchFormPayload();
+        if (!payload) {
+          return;
+        }
+
+        try {
+          const isEditing = state.branches.some((branch) => branch.branchId === payload.branchId);
+
+          if (isEditing) {
+            await updateBranchRecord(payload, { token });
+            setFormStatus(`Cabang ${payload.branchId} berhasil diperbarui.`);
+          } else {
+            await createBranchRecord(payload, { token });
+            setFormStatus(`Cabang ${payload.branchId} berhasil dibuat.`);
+          }
+
+          applyBranchForm(branchFormDefaults, "create");
+        } catch (error) {
+          const message = error instanceof Error ? error.message : "Mutasi cabang gagal diproses.";
+          setFormStatus(message);
+        }
+      });
+
+      branchFormResetButton?.addEventListener("click", () => {
+        window.setTimeout(() => {
+          applyBranchForm(branchFormDefaults, "create");
+          setFormStatus("Form direset ke mode buat cabang baru.");
+        }, 0);
+      });
+
+      branchList?.addEventListener("click", async (event) => {
+        const target = event.target instanceof HTMLElement ? event.target : null;
+        const actionButton = target?.closest("button");
+        const branchId = actionButton?.getAttribute("data-branch-id") ?? "";
+
+        if (!actionButton || !branchId) {
+          return;
+        }
+
+        const token = ensureToken();
+        if (!token) {
+          return;
+        }
+
+        const branch = state.branches.find((item) => item.branchId === branchId);
+
+        try {
+          if (actionButton.hasAttribute("data-admin-branch-edit") && branch) {
+            applyBranchForm(branch, "edit");
+            setFormStatus(`Mengedit cabang ${branch.name}. Branch ID dikunci untuk menjaga identitas record.`);
+            return;
+          }
+
+          if (actionButton.hasAttribute("data-admin-branch-activate")) {
+            await updateBranchRecord(toActivationPatch(branchId), { token });
+            setFormStatus(`Cabang ${branchId} diaktifkan kembali lewat updateBranch.`);
+            return;
+          }
+
+          if (actionButton.hasAttribute("data-admin-branch-deactivate")) {
+            await deactivateBranchRecord({ branchId }, { token });
+            setFormStatus(`Cabang ${branchId} dinonaktifkan.`);
+          }
+        } catch (error) {
+          const message = error instanceof Error ? error.message : "Aksi cabang gagal diproses.";
+          setFormStatus(message);
+        }
+      });
+
+      renderBranchList();
+      applyBranchForm(branchFormDefaults, "create");
+
+      const storedToken = getStoredToken();
+      if (authTokenInput && storedToken) {
+        authTokenInput.value = storedToken;
+        connectWithToken(storedToken);
+      }
+
+      window.addEventListener("pagehide", () => {
+        if (state.unsubscribe) {
+          state.unsubscribe();
+          state.unsubscribe = null;
+        }
+        disconnectAdminBranchClient();
+      }, { once: true });
+    </script>
+  </body>
+</html>
