@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-24T08:56:27.228Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-24T09:15:19.356Z"
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 
 ## Current Position
 
-Phase: 03 (branch-operations-management) — EXECUTING
-Plan: 2 of 2
+Phase: 03 (branch-operations-management) — COMPLETE
+Plan: 2 of 2 (ready for verification)
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Plan: 2 of 2
 | Phase 02 P02 | 15 min | 2 tasks | 2 files |
 | Phase 02 P03 | 7 min | 3 tasks | 3 files |
 | Phase 03 P01 | 9min | 3 tasks | 14 files |
+| Phase 03 P02 | 9min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,9 @@ Recent decisions affecting current work:
 - [Phase 03]: Publish Phase 3 reducers from spacetimedb/src/index.ts with explicit canonical names so generated client accessors stay stable.
 - [Phase 03]: Keep the first admin surface as a plain Astro route with a session-stored token and an app-owned SpacetimeDB wrapper.
 - [Phase 03]: Use updateBranch plus toActivationPatch for reactivation instead of inventing a separate activate reducer.
+- [Phase 03]: Use one fixed announcement ID, admin-live-status, for the Phase 3 quick update flow so admin can publish a single immediate operational change without full CRUD or scheduling yet.
+- [Phase 03]: Keep visitor rendering driven by the prepared public view model and add explicit normal, limited, and closed groups there instead of rebuilding targeting rules inside index.astro.
+- [Phase 03]: Preserve the older open and closed compatibility fields in the public view model while the homepage moves to richer normal, limited, and closed branch-state buckets.
 
 ### Pending Todos
 
@@ -84,12 +88,12 @@ None yet.
 
 ### Blockers/Concerns
 
-- No blocker for starting Phase 3.
+- Phase 3 implementation is complete; remaining follow-up is verification against a live admin token and running SpacetimeDB module.
 - Decide the canonical operational timezone before Phase 4 finalizes announcement scheduling rules.
 - Confirm the preferred admin auth UX/entrypoint before the branch-management interface expands.
 
 ## Session Continuity
 
-Last session: 2026-03-24T08:56:27.223Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-03-24T09:15:19.352Z
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None

@@ -8,7 +8,7 @@
 ### Public Status
 
 - [x] **PUB-01**: Visitor can open the public homepage and immediately see the current overall operational status
-- [ ] **PUB-02**: Visitor can see which branches are open, limited, or closed for the currently active status period
+- [x] **PUB-02**: Visitor can see which branches are open, limited, or closed for the currently active status period
 - [x] **PUB-03**: Visitor can still see a clear "normal operation" message when no special announcement is active
 - [x] **PUB-04**: Visitor sees public status updates from database-backed realtime data without waiting for a code redeploy
 - [ ] **PUB-05**: Visitor sees status that follows a defined effective period and canonical operational timezone
@@ -19,7 +19,7 @@
 - [x] **ADMN-01**: Admin can authenticate before accessing operational management features
 - [x] **ADMN-02**: Admin can create, edit, activate, and deactivate branch records without editing source code
 - [ ] **ADMN-03**: Admin can create, edit, publish, unpublish, and schedule operational announcements
-- [ ] **ADMN-04**: Admin can target an announcement to all branches or to selected branches only
+- [x] **ADMN-04**: Admin can target an announcement to all branches or to selected branches only
 - [ ] **ADMN-05**: Admin can set whether an announcement represents normal operation, limited operation, half-day operation, or full closure
 
 ### Data And Access
@@ -64,8 +64,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PUB-03 | Phase 2 | Complete |
 | PUB-04 | Phase 2 | Complete |
 | ADMN-02 | Phase 3 | Complete |
-| ADMN-04 | Phase 3 | Pending |
-| PUB-02 | Phase 3 | Pending |
+| ADMN-04 | Phase 3 | Complete |
+| PUB-02 | Phase 3 | Complete |
 | ADMN-03 | Phase 4 | Pending |
 | ADMN-05 | Phase 4 | Pending |
 | PUB-05 | Phase 4 | Pending |
@@ -78,4 +78,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-23*
-*Last updated: 2026-03-24 after Phase 2 completion*
+*Last updated: 2026-03-24 after Phase 3 completion*
